@@ -14,7 +14,7 @@ Version ranges (Finnish: versioalueet).
 
 ## Bug Tracker
 
-Any feature requests or bug reports shall go to the [todos of versioalueet](https://todo.sr.ht/~sthagen/ersioalueet).
+Any feature requests or bug reports shall go to the [todos of versioalueet](https://todo.sr.ht/~sthagen/versioalueet).
 
 ## Primary Source repository
 

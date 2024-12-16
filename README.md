@@ -18,7 +18,7 @@ User and developer [documentation of versioalueet](https://codes.dilettant.life/
 
 ## Bug Tracker
 
-Any feature requests or bug reports shall go to the [todos of versioalueet](https://todo.sr.ht/~sthagen/ersioalueet).
+Any feature requests or bug reports shall go to the [todos of versioalueet](https://todo.sr.ht/~sthagen/versioalueet).
 
 ## Primary Source repository
 
