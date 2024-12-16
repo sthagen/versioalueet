@@ -10,6 +10,7 @@ from typing import Union
 
 from versioalueet import DEBUG, ENCODING, ENCODING_ERRORS_POLICY, log
 
+ASTERISK = '*'
 COLON = ':'
 PIPE = '|'
 SLASH = '/'
@@ -61,10 +62,15 @@ class VersionRanges:
         if not rest.strip():
             raise ValueError('version constraints must be non empty')
 
-        if PIPE in rest:
-            self.version_constraints = [vc for vc in rest.replace(' ', '').split(PIPE) if vc]
-        else:
+        if rest.strip(PIPE).startswith(ASTERISK):
+            self.version_constraints = [ASTERISK]
+            if rest.strip(PIPE) != ASTERISK:
+                raise ValueError(f'if present, asterisk ({ASTERISK}) must be the only version constraint')
+        elif PIPE not in rest:
             self.version_constraints = [rest.replace(' ', '')]
+        else:
+            self.version_constraints = [vc for vc in rest.replace(' ', '').split(PIPE) if vc]
+
         tempo['version-constraints'] = self.version_constraints
 
         self.version_range = 'vers' + COLON + self.versioning_scheme + SLASH

@@ -46,9 +46,20 @@ def test_parse_no_version_constraints():
         assert 'empty' in str(err)
 
 
+def test_parse_asterisk_and_other_version_constraints():
+    with pytest.raises(ValueError) as err:
+        VersionRanges('vers:pypi/*|<=42')
+        assert 'present' in str(err)
+
+
 def test_parse_single_version():
     version_ranges = VersionRanges('vers:pypi/1.2.3')
     assert version_ranges.normalize() == 'vers:pypi/1.2.3'
+
+
+def test_parse_all_versions_asterisk():
+    version_ranges = VersionRanges('vers:pypi/|*|||')
+    assert version_ranges.normalize() == 'vers:pypi/*'
 
 
 def test_parse_superfluos_pipes():
