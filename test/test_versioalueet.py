@@ -46,6 +46,12 @@ def test_parse_no_version_constraints():
         assert 'empty' in str(err)
 
 
+def test_parse_comparator_but_no_version():
+    with pytest.raises(ValueError) as err:
+        VersionRanges('vers:pypi/>    ')
+        assert 'empty' in str(err)
+
+
 def test_parse_asterisk_and_other_version_constraints():
     with pytest.raises(ValueError) as err:
         VersionRanges('vers:pypi/*|<=42')

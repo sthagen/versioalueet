@@ -71,8 +71,41 @@ class VersionRanges:
         else:
             self.version_constraints = [vc for vc in rest.replace(' ', '').split(PIPE) if vc]
 
-        tempo['version-constraints'] = self.version_constraints
+        if not self.version_constraints:
+            raise ValueError('version constraints cannot be empty')
 
+        vc_pairs: list[tuple[str, str]] = []
+        for cv in self.version_constraints:
+            comparator, version = '', ''
+            if cv.startswith('>='):
+                comparator, version = '>=', cv[2:]
+            elif cv.startswith('<='):
+                comparator, version = '<=', cv[2:]
+            elif cv.startswith('>!='):
+                comparator, version = '!=', cv[2:]
+            elif cv.startswith('<'):
+                comparator, version = '<', cv[1:]
+            elif cv.startswith('>'):
+                comparator, version = '>', cv[1:]
+            else:
+                comparator, version = '', cv
+
+            if not version:
+                raise ValueError('empty version detected')
+
+            if '%' in version:
+                raise NotImplementedError('URL encoding not yet implemented')
+
+            vc_pairs.append((version, comparator))
+
+        vc_pairs_sorted = sorted(vc_pairs)
+        versions = [version for version, _ in vc_pairs_sorted]
+        print(f'{versions=}')
+        if sorted(list(set(versions))) != versions:
+            raise ValueError('versions must be unique across all version constraints')
+
+        self.version_constraints = [f'{c}{v}' for v, c in vc_pairs_sorted]
+        tempo['version-constraints'] = self.version_constraints
         self.version_range = 'vers' + COLON + self.versioning_scheme + SLASH
         self.version_range += PIPE.join(self.version_constraints)
 
