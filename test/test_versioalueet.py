@@ -71,3 +71,13 @@ def test_parse_all_versions_asterisk():
 def test_parse_superfluos_pipes():
     version_ranges = VersionRanges('vers:pypi/|1.2.3|||||')
     assert version_ranges.normalize() == 'vers:pypi/1.2.3'
+
+
+def test_parse_hidden_duplicate_versions():
+    lc_url_encoded = '1%3e2%3c3%3d4%215%2a6%7c7'
+    uc_url_encoded = '1%3E2%3C3%3D4%215%2A6%7C7'
+    version_decoded = '1>2<3=4!5*6|7'
+    triplicated = '|'.join((lc_url_encoded, uc_url_encoded, version_decoded))
+    with pytest.raises(ValueError) as err:
+        VersionRanges(f'vers:pypi/{triplicated}')
+        assert 'unique' in str(err)

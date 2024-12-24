@@ -7,6 +7,7 @@ TBD
 
 import argparse
 from typing import Union
+from urllib.parse import unquote
 
 from versioalueet import DEBUG, ENCODING, ENCODING_ERRORS_POLICY, log
 
@@ -94,13 +95,13 @@ class VersionRanges:
                 raise ValueError('empty version detected')
 
             if '%' in version:
-                raise NotImplementedError('URL encoding not yet implemented')
+                version = unquote(version)
 
             vc_pairs.append((version, comparator))
 
         vc_pairs_sorted = sorted(vc_pairs)
         versions = [version for version, _ in vc_pairs_sorted]
-        print(f'{versions=}')
+
         if sorted(list(set(versions))) != versions:
             raise ValueError('versions must be unique across all version constraints')
 
