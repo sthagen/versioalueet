@@ -6,7 +6,6 @@ TBD
 """
 
 import argparse
-import traceback
 from typing import Union
 from urllib.parse import unquote
 
@@ -23,13 +22,9 @@ ModelType = dict[str, Union[str, list[str], VCPairsType]]
 
 def fail(message: str, model: Union[ModelType, None] = None) -> bool:
     """DRY."""
-    try:
-        raise ValueError(message)
-    except ValueError:
-        if DEBUG and model:
-            log.debug('Model = %s' % (model,))
-        for line in traceback.format_exc().splitlines():
-            log.error(line)
+    if DEBUG and model:
+        log.debug('Model = %s' % (model,))
+    log.error(message)
     return True
 
 
