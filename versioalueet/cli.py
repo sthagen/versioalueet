@@ -1,10 +1,11 @@
 """CLI interface for version ranges."""
 
 import argparse
+import logging
 import sys
 
 import versioalueet.api as api
-from versioalueet import APP_ALIAS, APP_NAME
+from versioalueet import APP_ALIAS, APP_NAME, DEBUG, log
 
 
 def parse_request(argv: list[str]) -> int | argparse.Namespace:
@@ -28,6 +29,14 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
         action='store_true',
         help='work logging more information along the way (default: False)',
     )
+    parser.add_argument(
+        '--version-ranges',
+        '-r',
+        dest='version_ranges',
+        default='',
+        type=str,
+        help="version ranges as valid vers string (default: '')",
+    )
     if not argv:
         parser.print_help()
         return 0
@@ -36,6 +45,9 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
 
     if options.verbose and options.quiet:
         parser.error('you cannot be quiet and verbose at the same time')
+
+    if DEBUG and options.quiet:
+        parser.error('you cannot be quiet and debug at the same time')
 
     return options
 
@@ -46,4 +58,7 @@ def main(argv: list[str] | None = None) -> int:
     options = parse_request(argv)
     if isinstance(options, int):
         return 0
+    if options.quiet:
+        log.setLevel(logging.CRITICAL)
+
     return api.main(options)
