@@ -28,6 +28,90 @@ def fail(message: str, model: Union[ModelType, None] = None) -> bool:
     return True
 
 
+def _parse_uri_scheme(version_range: str, model: ModelType) -> tuple[bool, str]:
+    """The URI-scheme must be vers."""
+    if not version_range.startswith(f'vers{COLON}'):
+        model['error'] = 'version range must start with the URI scheme vers'
+        return fail(message=model['error'], model=model), ''  # type: ignore
+
+    model['uri-scheme'] = 'vers'
+    return False, version_range[5:]
+
+
+def _parse_version_scheme(scheme_and_vcs: str, model: ModelType) -> tuple[bool, str]:
+    """The <versioning-scheme> must be lowercase and a slash must separate from version constraints."""
+    if SLASH not in scheme_and_vcs:
+        model['error'] = 'version range must provide <versioning-scheme> followed by a slash (/)'
+        return fail(message=model['error'], model=model), ''  # type: ignore
+
+    versioning_scheme, vc_string = scheme_and_vcs.split(SLASH, 1)
+    versioning_scheme = versioning_scheme.strip()
+    model['versioning-scheme'] = versioning_scheme
+
+    if not versioning_scheme:
+        model['error'] = 'version system must be non empty'
+        return fail(message=model['error'], model=model), ''  # type: ignore
+
+    if not versioning_scheme.lower() == versioning_scheme:
+        model['error'] = 'version system must be lower case'
+        return fail(message=model['error'], model=model), ''  # type: ignore
+
+    vc_string = vc_string.strip()
+    if not vc_string:
+        model['error'] = 'version constraints must be non empty'
+        return fail(message=model['error'], model=model), ''  # type: ignore
+
+    return False, vc_string
+
+
+def _split_version_constraints(vc_string: str, model: ModelType) -> tuple[bool, list[str]]:
+    """Split real version constraints."""
+    if PIPE in vc_string:
+        if vc_string.strip(PIPE).startswith(ASTERISK):
+            version_constraints = [ASTERISK]
+            if vc_string.strip(PIPE) != ASTERISK:
+                model['error'] = 'if present, asterisk (%s) must be the only version constraint' % (ASTERISK,)
+                return fail(message=model['error'], model=model), []  # type: ignore
+
+    version_constraints = [vc for vc in vc_string.replace(' ', '').split(PIPE) if vc]
+    return False, version_constraints
+
+
+def _parse_version_constraint_pairs(version_constraints: list[str], model: ModelType) -> tuple[bool, VCPairsType]:
+    """Separation of concerns."""
+    vc_pairs: VCPairsType = []
+    for cv in version_constraints:
+        comparator, version = '', ''
+        if cv.startswith('>='):
+            comparator, version = '>=', cv[2:]
+        elif cv.startswith('<='):
+            comparator, version = '<=', cv[2:]
+        elif cv.startswith('!='):
+            comparator, version = '!=', cv[2:]
+        elif cv.startswith('<'):
+            comparator, version = '<', cv[1:]
+        elif cv.startswith('>'):
+            comparator, version = '>', cv[1:]
+        elif cv.startswith('='):
+            comparator, version = '=', cv[1:]
+        else:
+            comparator, version = '', cv
+
+        if not version:
+            model['error'] = 'empty version detected'
+            return fail(message=model['error'], model=model), []  # type: ignore
+
+        if '%' in version:
+            version = unquote(version)
+
+        vc_pairs.append((version, comparator))
+
+    vc_pairs.sort()
+    model['version-constraint-pairs'] = vc_pairs
+
+    return False, vc_pairs
+
+
 class VersionRanges:
     """Provide operations on version ranges.
 
@@ -55,89 +139,39 @@ class VersionRanges:
 
     def parse(self, version_range: str) -> tuple[bool, ModelType]:
         """Poor person parser for bootstrap."""
-        failed = False
-        tempo: ModelType = {
+        model: ModelType = {
             'received': version_range,
         }
 
-        if not version_range.startswith(f'vers{COLON}'):
-            tempo['error'] = 'version range must start with the URI scheme vers'
-            return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
+        failed, scheme_and_vcs = _parse_uri_scheme(version_range, model)
+        if failed:
+            return failed, model
 
-        tempo['uri-scheme'] = 'vers'
-        rest = version_range[5:]
+        failed, vc_string = _parse_version_scheme(scheme_and_vcs, model)
+        if failed:
+            return failed, model
 
-        if SLASH not in rest:
-            tempo['error'] = 'version range must provide <versioning-scheme> followed by a slash (/)'
-            return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
+        failed, version_constraints = _split_version_constraints(vc_string, model)
+        if failed:
+            return failed, model
 
-        self.versioning_scheme, rest = rest.split(SLASH, 1)
-        tempo['versioning-scheme'] = self.versioning_scheme
+        failed, vc_pairs = _parse_version_constraint_pairs(version_constraints, model)
+        if failed:
+            return failed, model
 
-        if not self.versioning_scheme.strip():
-            tempo['error'] = 'version system must be non empty'
-            failed = fail(message=tempo['error'], model=tempo)  # type: ignore
-
-        self.versioning_scheme = self.versioning_scheme.strip()
-        if not self.versioning_scheme.lower() == self.versioning_scheme:
-            tempo['error'] = 'version system must be lower case'
-            return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
-
-        if not rest.strip():
-            tempo['error'] = 'version constraints must be non empty'
-            return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
-
-        if PIPE in rest:
-            if rest.strip(PIPE).startswith(ASTERISK):
-                self.version_constraints = [ASTERISK]
-                if rest.strip(PIPE) != ASTERISK:
-                    tempo['error'] = 'if present, asterisk (%s) must be the only version constraint' % (ASTERISK,)
-                    return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
-
-        self.version_constraints = [vc for vc in rest.replace(' ', '').split(PIPE) if vc]
-
-        vc_pairs: VCPairsType = []
-        for cv in self.version_constraints:
-            comparator, version = '', ''
-            if cv.startswith('>='):
-                comparator, version = '>=', cv[2:]
-            elif cv.startswith('<='):
-                comparator, version = '<=', cv[2:]
-            elif cv.startswith('!='):
-                comparator, version = '!=', cv[2:]
-            elif cv.startswith('<'):
-                comparator, version = '<', cv[1:]
-            elif cv.startswith('>'):
-                comparator, version = '>', cv[1:]
-            elif cv.startswith('='):
-                comparator, version = '=', cv[1:]
-            else:
-                comparator, version = '', cv
-
-            if not version:
-                tempo['error'] = 'empty version detected'
-                return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
-
-            if '%' in version:
-                version = unquote(version)
-
-            vc_pairs.append((version, comparator))
-
-        vc_pairs_sorted = sorted(vc_pairs)
-        tempo['version-constraint-pairs'] = vc_pairs_sorted
-
-        versions = [version for version, _ in vc_pairs_sorted]
+        versions = [version for version, _ in vc_pairs]
 
         if sorted(list(set(versions))) != versions:
-            tempo['error'] = 'versions must be unique across all version constraints'
-            return fail(message=tempo['error'], model=tempo), tempo  # type: ignore
+            model['error'] = 'versions must be unique across all version constraints'
+            return fail(message=model['error'], model=model), model  # type: ignore
 
-        self.version_constraints = [f'{c}{v}' for v, c in vc_pairs_sorted]
-        tempo['version-constraints'] = self.version_constraints
-        self.version_range = 'vers' + COLON + self.versioning_scheme + SLASH
+        self.versioning_scheme = model['versioning-scheme']
+        self.version_constraints = [f'{c}{v}' for v, c in vc_pairs]
+        model['version-constraints'] = self.version_constraints
+        self.version_range = 'vers' + COLON + self.versioning_scheme + SLASH  # type: ignore
         self.version_range += PIPE.join(self.version_constraints)
 
-        return failed, tempo
+        return failed, model
 
 
 def main(options: argparse.Namespace) -> int:
