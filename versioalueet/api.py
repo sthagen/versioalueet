@@ -2,7 +2,8 @@
 
 Use case example:
 
-TBD
+>>> version_ranges = VersionRanges('vers:pypi/|1.2.3|||||')
+>>> assert version_ranges.normalize() == 'vers:pypi/1.2.3'
 """
 
 import argparse
@@ -21,7 +22,15 @@ ModelType = dict[str, Union[str, list[str], VCPairsType]]
 
 
 def fail(message: str, model: Union[ModelType, None] = None) -> bool:
-    """DRY."""
+    """DRY.
+
+    Usage examples:
+
+    >>> DEBUG = True
+    >>> model = {'received': 'no:thing'}
+    >>> fail('some problem', model=model)
+    True
+    """
     if DEBUG and model:
         log.debug('Model = %s' % (model,))
     log.error(message)
@@ -29,7 +38,13 @@ def fail(message: str, model: Union[ModelType, None] = None) -> bool:
 
 
 def _parse_uri_scheme(version_range: str, model: ModelType) -> tuple[bool, str]:
-    """The URI-scheme must be vers."""
+    """The URI-scheme must be vers.
+
+    Usage examples:
+
+    >>> _parse_uri_scheme('VERS:WRONG/YES', model={'received': 'VERS:WRONG/YES', 'uri-scheme': 'vers'})
+    (True, '')
+    """
     if not version_range.startswith(f'vers{COLON}'):
         model['error'] = 'version range must start with the URI scheme vers'
         return fail(message=model['error'], model=model), ''  # type: ignore
@@ -39,7 +54,18 @@ def _parse_uri_scheme(version_range: str, model: ModelType) -> tuple[bool, str]:
 
 
 def _parse_version_scheme(scheme_and_vcs: str, model: ModelType) -> tuple[bool, str]:
-    """The <versioning-scheme> must be lowercase and a slash must separate from version constraints."""
+    """The <versioning-scheme> must be lowercase and a slash must separate from version constraints.
+
+    Usage examples:
+
+    >>> model = {'received': 'vers:pypi/*', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi'}
+    >>> _parse_version_scheme('pypi/*', model=model)
+    (False, '*')
+
+    >>> model = {'received': 'vers:pypi/', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi'}
+    >>> _parse_version_scheme('pypi/', model=model)
+    (True, '')
+    """
     if SLASH not in scheme_and_vcs:
         model['error'] = 'version range must provide <versioning-scheme> followed by a slash (/)'
         return fail(message=model['error'], model=model), ''  # type: ignore
@@ -65,7 +91,19 @@ def _parse_version_scheme(scheme_and_vcs: str, model: ModelType) -> tuple[bool, 
 
 
 def _split_version_constraints(vc_string: str, model: ModelType) -> tuple[bool, list[str]]:
-    """Split real version constraints."""
+    """Split real version constraints.
+
+    Usage examples:
+
+    >>> _split_version_constraints('13', {})
+    (False, ['13'])
+
+    >>> _split_version_constraints('|||||42||', {})
+    (False, ['42'])
+
+    >>> _split_version_constraints('|1|2|3|=4||>=6', {})
+    (False, ['1', '2', '3', '=4', '>=6'])
+    """
     if PIPE in vc_string:
         if vc_string.strip(PIPE).startswith(ASTERISK):
             version_constraints = [ASTERISK]
@@ -78,7 +116,22 @@ def _split_version_constraints(vc_string: str, model: ModelType) -> tuple[bool, 
 
 
 def _parse_version_constraint_pairs(version_constraints: list[str], model: ModelType) -> tuple[bool, VCPairsType]:
-    """Separation of concerns."""
+    """Separation of concerns.
+
+    Implementer notes:
+
+    - the version constraints items contain no spaces and no pipes
+
+    Usage examples:
+
+    >>> _parse_version_constraint_pairs(['1', '3', '=4', '2', '>=6'], model={})
+    (False, [('1', ''), ('2', ''), ('3', ''), ('4', '='), ('6', '>=')])
+
+    >>> model = {}
+    >>> _parse_version_constraint_pairs(['1', '', '2'], model=model)
+    (True, [])
+    >>> assert 'empty' in model.get('error', '')
+    """
     vc_pairs: VCPairsType = []
     for cv in version_constraints:
         comparator, version = '', ''
@@ -115,26 +168,59 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
 class VersionRanges:
     """Provide operations on version ranges.
 
-    TBD
+    Usage examples:
+
+        >>> lc_url_encoded = '1%3e2%3c3%3d4%215%2a6%7c7'
+        >>> uc_url_encoded = '1%3E2%3C3%3D4%215%2A6%7C7'
+        >>> version_decoded = '1>2<3=4!5*6|7'
+        >>> triplicated = '|'.join((lc_url_encoded, uc_url_encoded, version_decoded))
+        >>> version_ranges = VersionRanges(f'vers:pypi/{triplicated}')
+        >>> assert 'unique' in version_ranges.model.get('error', '')
 
     """
 
     def __init__(self, version_range: str) -> None:
-        """Later alligator."""
-        self.version_range = version_range
-        self.normalize()
-        self.failed, self.model = self.parse(self.version_range)
+        """Later alligator.
+
+        Usage examples:
+
+        >>> hidden_emopty_version = 'vers:pypi/|1.2.3|>||||'
+        >>> version_ranges = VersionRanges(hidden_emopty_version)
+        >>> assert 'empty version detected' in version_ranges.model.get('error', '')
+        """
+        self.failed, self.model = self.parse(version_range)
 
     def normalize(self, version_range: str = '') -> str:
-        """Normalize version range."""
-        if not version_range:
-            version_range = self.version_range
-        else:
-            self.parse(version_range)
+        """Normalize version range.
+
+        Usage examples:
+
+        >>> a_version = 'vers:pypi/|1.2.3||||'
+        >>> version_ranges = VersionRanges(a_version)
+        >>> assert not version_ranges.model.get('error', '')
+        >>> version_ranges.normalize()
+        'vers:pypi/1.2.3'
+
+        >>> hidden_emopty_version = 'vers:pypi/|1.2.3|>||||'
+        >>> vr = VersionRanges('vers:abc/42')
+        >>> vr.normalize(hidden_emopty_version)
+        'ERROR:<empty version detected>'
+        """
+        if version_range:
+            self.failed, self.model = self.parse(version_range)
+        if error := self.model.get('error', ''):
+            return 'ERROR:<' + error + '>'  # type: ignore
         return self.version_range
 
     def __repr__(self) -> str:
-        """The version ranges string is what we are."""
+        """The version ranges string is what we are.
+
+        Usage examples:
+
+        >>> maybe_43 = 'vers:pypi/<44|>42'
+        >>> version_ranges = VersionRanges(maybe_43)
+        >>> assert 'vers:pypi/>42|<44' == str(version_ranges)
+        """
         return self.version_range
 
     def parse(self, version_range: str) -> tuple[bool, ModelType]:
