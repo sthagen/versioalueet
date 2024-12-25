@@ -4,10 +4,10 @@
 
 Versions of versioalueet currently being supported with security updates.
 
-| Version(s)  | Supported |
-|:----------- |:--------- |
-| 2024.12.x   | yes       |
-| < 2024.12.x | no        |
+| Version(s)   | Supported |
+|:-------------|:----------|
+| 2024.12.25   | yes       |
+| < 2024.12.25 | no        |
 
 ## Reporting a Vulnerability
 
