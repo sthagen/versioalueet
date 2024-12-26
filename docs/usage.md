@@ -39,7 +39,7 @@ Same with debug-mode activated:
 2024-12-26T11:48:17.675023+00:00 ERROR [VERSIOALUEET]: empty version detected
 ```
 
-Quiet or silent mode only providing a non-zero exit code from the process:
+Quiet or silent mode only providing a non-zero exit code from the process (using another invalid version range as example):
 
 ```console
 ❯ versioalueet -qr 'vers:pypi/<' || echo $?
