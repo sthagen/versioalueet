@@ -1,1 +1,26 @@
-No data found for https://pypi.org/project/versioalueet/
+{
+  "data": [
+    {
+      "category": "3.10",
+      "date": "2024-12",
+      "downloads": 8
+    },
+    {
+      "category": "3.11",
+      "date": "2024-12",
+      "downloads": 2
+    },
+    {
+      "category": "3.12",
+      "date": "2024-12",
+      "downloads": 2
+    },
+    {
+      "category": "null",
+      "date": "2024-12",
+      "downloads": 37
+    }
+  ],
+  "package": "versioalueet",
+  "type": "python_minor_downloads"
+}
