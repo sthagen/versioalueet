@@ -1,6 +1,6 @@
-# Command Line API
+# Application Programming Interface (API)
 
-Use the python help command to learn about the API.
+Please see below examples and use the python help command to learn about the API.
 
 ## Example
 
