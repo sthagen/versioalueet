@@ -12,7 +12,21 @@ __version__ = '2024.12.25+parent.26a93820'
 __version_info__ = tuple(
     e if '-' not in e else e.split('-')[0] for part in __version__.split('+') for e in part.split('.') if e != 'parent'
 )
-__all__: list[str] = []
+
+__all__: list[str] = [
+    'APP_ALIAS',
+    'APP_ENV',
+    'APP_NAME',
+    'DEBUG',
+    'DEFAULT_CONFIG_NAME',  # TODO - add capability and harmonize processing
+    'ENCODING',
+    'ENCODING_ERRORS_POLICY',
+    'QUIET',  # TODO - harmonize processing
+    'STRICT',  # TODO - add mode and harmonize processing
+    'VERBOSE',  # TODO - harmonize processing
+    'VERSION',
+    'VERSION_INFO',
+]
 
 APP_ALIAS = str(pathlib.Path(__file__).parent.name)
 APP_ENV = APP_ALIAS.upper()
@@ -35,6 +49,8 @@ LOG_LEVEL = logging.INFO
 TS_FORMAT_LOG = '%Y-%m-%dT%H:%M:%S'
 TS_FORMAT_PAYLOADS = '%Y-%m-%d %H:%M:%S.%f UTC'
 
+VERSION = __version__
+VERSION_INFO = __version_info__
 
 @no_type_check
 def formatTime_RFC3339(self, record, datefmt=None):  # noqa

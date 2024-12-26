@@ -1,3 +1,4 @@
+import logging
 import pathlib
 
 import pytest
@@ -5,16 +6,12 @@ import pytest
 import versioalueet.cli as cli
 from versioalueet.api import VersionRanges
 
-TEST_PREFIX = pathlib.Path('test', 'fixtures')
-DEFAULT_DOCUMENTS_PATH = TEST_PREFIX
-TEST_MAKE_MISSING = 'missing-this-file-for-'
-
 
 def test_main_empty_request(capsys):
     options = cli.main([])
     assert options == 0  # type: ignore
     out, err = capsys.readouterr()
-    assert 'usage: versioalueet [-h] [--quiet] [--verbose]' in out
+    assert 'usage: versioalueet [-h] [-q] [-v] [-V] [-r VERSION_RANGES] [versions ...]' in out
     assert not err
 
 
@@ -23,7 +20,7 @@ def test_main_help_request(capsys):
         options = cli.main(['-h'])
         assert options == 0  # type: ignore
     out, err = capsys.readouterr()
-    assert 'usage: versioalueet [-h] [--quiet] [--verbose]' in out
+    assert 'usage: versioalueet [-h] [-q] [-v] [-V] [-r VERSION_RANGES] [versions ...]' in out
     assert 'Version ranges (Finnish: versioalueet)' in out
     assert 'show this help message and exit' in out
     assert not err
@@ -34,7 +31,7 @@ def test_main_quiet_and_verbose_request(capsys):
         options = cli.main(['-q', '-v'])
         assert options == 2  # type: ignore
     out, err = capsys.readouterr()
-    assert 'usage: versioalueet [-h] [--quiet] [--verbose]' in err
+    assert 'usage: versioalueet [-h] [-q] [-v] [-V] [-r VERSION_RANGES] [versions ...]' in err
     assert 'error' in err.lower()
     assert 'cannot be quiet and verbose' in err
     assert not out
@@ -55,7 +52,7 @@ def test_parse_empty_request(capsys):
     options = cli.parse_request([])
     assert options == 0  # type: ignore
     out, err = capsys.readouterr()
-    assert 'usage: versioalueet [-h] [--quiet] [--verbose]' in out
+    assert 'usage: versioalueet [-h] [-q] [-v] [-V] [-r VERSION_RANGES] [versions ...]' in out
     assert not err
 
 
@@ -64,17 +61,16 @@ def test_parse_help_request(capsys):
         options = cli.parse_request(['-h'])
         assert options == 0  # type: ignore
     out, err = capsys.readouterr()
-    assert 'usage: versioalueet [-h] [--quiet] [--verbose]' in out
+    assert 'usage: versioalueet [-h] [-q] [-v] [-V] [-r VERSION_RANGES] [versions ...]' in out
     assert 'Version ranges (Finnish: versioalueet)' in out
     assert 'show this help message and exit' in out
     assert not err
 
 
-def test_parse_request_pos_doc_root_not_present(capsys):
-    with pytest.raises(SystemExit) as err:
-        cli.parse_request([f'{TEST_MAKE_MISSING}{DEFAULT_DOCUMENTS_PATH}', '-q', '-v'])
-    assert err.value.code == 2
+def test_main_version_without_version_ranges(capsys, caplog):
+    caplog.set_level(logging.WARNING)
+    cli.main(['42'])
     out, err = capsys.readouterr()
     assert not out
-    message_part = f'versioalueet: error: unrecognized arguments: {TEST_MAKE_MISSING}{DEFAULT_DOCUMENTS_PATH}'
-    assert message_part in err
+    message_part = '42'
+    assert message_part in caplog.text

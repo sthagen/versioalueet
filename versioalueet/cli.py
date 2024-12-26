@@ -5,43 +5,62 @@ import logging
 import sys
 
 import versioalueet.api as api
-from versioalueet import APP_ALIAS, APP_NAME, DEBUG, log
+from versioalueet import APP_ALIAS, APP_NAME, DEBUG, VERSION, log
 
 
 def parse_request(argv: list[str]) -> int | argparse.Namespace:
-    """DRY."""
+    """Parse the command line arguments received."""
     parser = argparse.ArgumentParser(
         prog=APP_ALIAS, description=APP_NAME, formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument(
-        '--quiet',
         '-q',
+        '--quiet',
         dest='quiet',
         default=False,
         action='store_true',
         help='work as quiet as possible (default: False)',
     )
     parser.add_argument(
-        '--verbose',
         '-v',
+        '--verbose',
         dest='verbose',
         default=False,
         action='store_true',
         help='work logging more information along the way (default: False)',
     )
     parser.add_argument(
-        '--version-ranges',
+        '-V',
+        '--version-of-lib',
+        dest='package_version',
+        default=False,
+        action='store_true',
+        help='show the library / package version and exit (default: False)',
+    )
+    parser.add_argument(
         '-r',
+        '--version-ranges',
         dest='version_ranges',
         default='',
         type=str,
         help="version ranges as valid vers string (default: '')",
+    )
+    parser.add_argument(
+        dest='versions',
+        nargs="*",
+        default='',
+        type=str,
+        help="version(s) to test against version ranges for inclusion (default: '')",
     )
     if not argv:
         parser.print_help()
         return 0
 
     options = parser.parse_args(argv)
+
+    if options.package_version:
+        print(VERSION)
+        return 0
 
     if options.verbose and options.quiet:
         parser.error('you cannot be quiet and verbose at the same time')
@@ -60,5 +79,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if options.quiet:
         log.setLevel(logging.CRITICAL)
+    elif DEBUG:
+        log.setLevel(logging.DEBUG)
 
     return api.main(options)
