@@ -51,21 +51,26 @@ Some benchmarking of use versus abuse case on process level (randomly distracted
 ```console
 ❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" --warmup 13 --ignore-failure
 Benchmark 1: versioalueet -qr 'vers:pypi/42'
-  Time (mean ± σ):     108.4 ms ±   5.4 ms    [User: 30.2 ms, System: 11.4 ms]
-  Range (min … max):    98.9 ms … 117.0 ms    24 runs
+  Time (mean ± σ):     100.2 ms ±   0.9 ms    [User: 28.9 ms, System: 10.5 ms]
+  Range (min … max):    98.2 ms … 101.9 ms    29 runs
 
 Benchmark 2: versioalueet -qr ''
-  Time (mean ± σ):     103.9 ms ±   3.5 ms    [User: 29.5 ms, System: 11.1 ms]
-  Range (min … max):   100.3 ms … 116.3 ms    27 runs
+  Time (mean ± σ):      99.6 ms ±   0.7 ms    [User: 28.7 ms, System: 10.6 ms]
+  Range (min … max):    97.5 ms … 100.6 ms    29 runs
 
   Warning: Ignoring non-zero exit code.
 
 Summary
   versioalueet -qr '' ran
-    1.04 ± 0.06 times faster than versioalueet -qr 'vers:pypi/42'
+    1.01 ± 0.01 times faster than versioalueet -qr 'vers:pypi/42'
 ```
 
-Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0.
+Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0 and tested:
+
+```console
+❯ versioalueet --version-of-lib
+2024.12.26+parent.gf5384e12
+```
 
 ### Doctest from Implementation
 
