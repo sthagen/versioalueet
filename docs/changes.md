@@ -8,6 +8,7 @@
 - added the python 3.13 interoperability claim (untested)
 - amended documentation on usage and API
 - ensured the normalize method works as intended (still maybe add a free function)
+- fixed corner case in normalize when receiving explicit empty string
 - fixed meta data that caused an implementation less package publication
 - harmonized the order of short and long options for the help page
 - moved from replace to classic python split-join idiom for un-spacing
