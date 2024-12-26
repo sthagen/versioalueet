@@ -52,6 +52,7 @@ TS_FORMAT_PAYLOADS = '%Y-%m-%d %H:%M:%S.%f UTC'
 VERSION = __version__
 VERSION_INFO = __version_info__
 
+
 @no_type_check
 def formatTime_RFC3339(self, record, datefmt=None):  # noqa
     """HACK A DID ACK we could inject .astimezone() to localize ..."""

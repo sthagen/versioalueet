@@ -189,7 +189,7 @@ class VersionRanges:
         """
         self.failed, self.model = self.parse(''.join(version_range.split()))
 
-    def normalize(self, version_range: str = '') -> str:
+    def normalize(self, version_range: Union[str, None] = None) -> str:
         """Normalize version range.
 
         Usage examples:
@@ -205,11 +205,11 @@ class VersionRanges:
         >>> vr.normalize(hidden_emopty_version)
         'ERROR:<empty version detected>'
         """
-        if version_range:
+        if version_range is not None:
             self.failed, self.model = self.parse(''.join(version_range.split()))
         if error := self.model.get('error', ''):
             return 'ERROR:<' + error + '>'  # type: ignore
-        return self.version_range
+        return self.version_range  # type:ignore
 
     def __repr__(self) -> str:
         """The version ranges string is what we are.
@@ -220,7 +220,7 @@ class VersionRanges:
         >>> version_ranges = VersionRanges(maybe_43)
         >>> assert 'vers:pypi/>42|<44' == str(version_ranges)
         """
-        return self.version_range
+        return self.version_range  # type: ignore
 
     def parse(self, version_range: str) -> tuple[bool, ModelType]:
         """Poor person parser for bootstrap."""
@@ -252,7 +252,7 @@ class VersionRanges:
 
         model['version-constraints'] = [f'{c}{v}' for v, c in vc_pairs]
         model['version-range'] = (
-            'vers' + COLON + model['versioning-scheme'] + SLASH + PIPE.join(model['version-constraints']) # type: ignore
+            'vers' + COLON + model['versioning-scheme'] + SLASH + PIPE.join(model['version-constraints'])  # type: ignore
         )
 
         self.versioning_scheme = model['versioning-scheme']

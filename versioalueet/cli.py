@@ -47,7 +47,7 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
     )
     parser.add_argument(
         dest='versions',
-        nargs="*",
+        nargs='*',
         default='',
         type=str,
         help="version(s) to test against version ranges for inclusion (default: '')",
