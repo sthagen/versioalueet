@@ -46,23 +46,30 @@ Quiet or silent mode only providing a non-zero exit code from the process (using
 1
 ```
 
-Some benchmarking of use versus abuse case on process level (randomly distracted Mac mini with Apple M1 CPU and macOS Sonoma 14.7.2 (23H311)):
+Some benchmarking of success versus failure validation cases on process level (randomly distracted Mac mini with Apple M1 CPU and macOS Sonoma 14.7.2 (23H311)):
+
+| Command                           |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
+|:----------------------------------|------------:|---------:|---------:|------------:|
+| `versioalueet -qr 'vers:pypi/42'` | 100.0 ± 1.4 |     98.3 |    104.6 | 1.00 ± 0.02 |
+| `versioalueet -qr ''`             |  99.5 ± 0.9 |     97.5 |    101.8 |        1.00 |
+
+Table: Benchmark of success and failure paths.
 
 ```console
 ❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" --warmup 13 --ignore-failure
 Benchmark 1: versioalueet -qr 'vers:pypi/42'
-  Time (mean ± σ):     100.2 ms ±   0.9 ms    [User: 28.9 ms, System: 10.5 ms]
-  Range (min … max):    98.2 ms … 101.9 ms    29 runs
+  Time (mean ± σ):     100.0 ms ±   1.4 ms    [User: 29.0 ms, System: 10.6 ms]
+  Range (min … max):    98.3 ms … 104.6 ms    29 runs
 
 Benchmark 2: versioalueet -qr ''
-  Time (mean ± σ):      99.6 ms ±   0.7 ms    [User: 28.7 ms, System: 10.6 ms]
-  Range (min … max):    97.5 ms … 100.6 ms    29 runs
+  Time (mean ± σ):      99.5 ms ±   0.9 ms    [User: 28.9 ms, System: 10.5 ms]
+  Range (min … max):    97.5 ms … 101.8 ms    29 runs
 
   Warning: Ignoring non-zero exit code.
 
 Summary
   versioalueet -qr '' ran
-    1.01 ± 0.01 times faster than versioalueet -qr 'vers:pypi/42'
+    1.00 ± 0.02 times faster than versioalueet -qr 'vers:pypi/42'
 ```
 
 Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0 and tested:
