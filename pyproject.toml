@@ -17,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.9",
 ]
 keywords = ["developer-tools", "data-processing"]
@@ -39,13 +40,13 @@ Test-Coverage = "https://codes.dilettant.life/coverage/versioalueet"
 versioalueet = "versioalueet.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["omforme"]
+include = ["versioalueet"]
 exclude = ["test*"]
 
 [tool.black]
 line-length = 120
 skip-string-normalization = true
-target-version = [ "py39", "py310", "py311", "py312" ]
+target-version = [ "py39", "py310", "py311", "py312", "py313" ]
 
 [tool.coverage.run]
 branch = true
