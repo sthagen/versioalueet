@@ -26,35 +26,104 @@ options:
 
 A failing version ranges string validation (a version constraint with a comparator but no version):
 
-```console
+```bash
 ❯ VERSIOALUEET_DEBUG= versioalueet -vr 'vers:pypi/<'
 2024-12-26T11:48:28.149150+00:00 ERROR [VERSIOALUEET]: empty version detected
 ```
 
-Same with debug-mode activated (merging both output streams and cutting off the timestamp, level, and 
-module prefixes of the output lines):
+Same with debug-mode activated (merging both output streams and cutting off the timestamp prefixes of the output lines):
 
 ```console
-❯ VERSIOALUEET_DEBUG=Y versioalueet -vr 'vers:pypi/<' 2>&1 | cut -c56-
-environment: [
-- library-env: DEBUG=True, VERSION='2024.12.26+parent.gf5384e12', ENCODING='utf-8', ENCODING_ERRORS_POLICY='ignore'
-- interpreter-env: exec_prefix='/Users/ruth/.pyenv/versions/versioalueet-3-12-4', exec_path='/Users/ruth/.pyenv/versions/versioalueet-3-12-4/bin/python'
-- interpreter-impl: impl_name='cpython', version(major=3, minor=12, micro=4, releaselevel='final', serial=0)
-- interpreter-flags: flags=['hash_randomization=1', 'int_max_str_digits=4300']
-- os-env: node_id='c79891e5-aabf-3a83-95b9-588edcd8327f', machine_type='arm64', platform_code='macOS-14.7.2', platform_release='23.6.0'
-- os-uname: os_sysname='Darwin', os_nodename='helsinki.home',os_version='Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103'
-- os-resource-usage: ru_maxrss_mbytes_kbytes_precision=18.656, ru_utime_msec_usec_precision=41.064, ru_stime_msec_usec_precision=26.327, ru_minflt=3431, ru_majflt=13, ru_inblock=0, ru_oublock=0, ru_nvcsw=3, ru_nivcsw=54
-- os-cpu-resources: os_cpu_present=8, os_cpu_available=-1
-]
-Model = {'received': 'vers:pypi/<', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi', 'error': 'empty version detected'}
-empty version detected
+❯ VERSIOALUEET_DEBUG=Y versioalueet -vr 'vers:pypi/<' 2>&1 | cut -c34-
+DEBUG [VERSIOALUEET]: library-env: debug-mode=True, version=2024.12.26+parent.gf5384e12, encoding=utf-8, encoding-errors-policy=ignore
+DEBUG [VERSIOALUEET]: interpreter-env: exec-prefix=/Users/ruth/.pyenv/versions/versioalueet-3-12-4, exec-path=/Users/ruth/.pyenv/versions/versioalueet-3-12-4/bin/python
+DEBUG [VERSIOALUEET]: interpreter-impl: impl-name=cpython, version(major=3, minor=12, micro=4, releaselevel=final, serial=0)
+DEBUG [VERSIOALUEET]: interpreter-flags: hash_randomization=1, int_max_str_digits=4300
+DEBUG [VERSIOALUEET]: os-env: node-id=c79891e5-aabf-3a83-95b9-588edcd8327f, machine-type=arm64, platform-code=macOS-14.7.2, platform_release=23.6.0
+DEBUG [VERSIOALUEET]: os-uname: os-sysname=Darwin, os-nodename=helsinki.home, os-version=Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103
+DEBUG [VERSIOALUEET]: os-resource-usage: ru-maxrss-mbytes-kbytes-precision=14.938, ru-utime-msec-usec-precision=36.779, ru-stime-msec-usec-precision=22.758, ru-minflt=2813, ru-majflt=13, ru-inblock=0, ru-outblock=0, ru_nvcsw=0, ru_nivcsw=40
+DEBUG [VERSIOALUEET]: os-cpu-resources: os-cpu-present=8, os-cpu-available=-1
+DEBUG [VERSIOALUEET]: Model = {'received': 'vers:pypi/<', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi', 'error': 'empty version detected'}
+ERROR [VERSIOALUEET]: empty version detected
 ```
 
-Quiet or silent mode only providing a non-zero exit code from the process (using another invalid version range as example):
+Quiet (or silent) mode only provides the validation result in the exit code from the process (using another invalid version range as example):
 
-```console
+```bash
 ❯ versioalueet -qr 'vers:pypi/<' || echo $?
 1
+```
+
+Or, a valid example (yields the normalized verion ranges on standard out and a successful exit code i.e. zero):
+
+```bash
+❯ versioalueet -qr 'vers:pypi/*'
+vers:pypi/*
+❯ echo $?
+0
+```
+
+Reporting only the process environment (including python and library information):
+
+```bash
+❯ versioalueet -R
+```
+
+The above yields the following valid JSON (on some randomly selected machine):
+
+```json
+{
+  "library-env": {
+    "debug-mode": false,
+    "version": "2024.12.26+parent.gf5384e12",
+    "encoding": "utf-8",
+    "encoding-errors-policy": "ignore"
+  },
+  "interpreter-env": {
+    "exec-prefix": "/some/python/install-or-virtualenv",
+    "exec-path": "/some/python/install-or-virtualenv/bin/python"
+  },
+  "interpreter-impl": {
+    "impl-name": "cpython",
+    "version": {
+      "major": 3,
+      "minor": 12,
+      "micro": 4,
+      "releaselevel": "final",
+      "serial": 0
+    }
+  },
+  "interpreter-flags": {
+    "hash_randomization": 1,
+    "int_max_str_digits": 4300
+  },
+  "os-env": {
+    "node-id": "c79891e5-aabf-3a83-95b9-588edcd8327f",
+    "machine-type": "arm64",
+    "platform-code": "macOS-14.7.2",
+    "platform_release": "23.6.0"
+  },
+  "os-uname": {
+    "os-sysname": "Darwin",
+    "os-nodename": "example.com",
+    "os-version": "Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103"
+  },
+  "os-resource-usage": {
+    "ru-maxrss-mbytes-kbytes-precision": 14.547,
+    "ru-utime-msec-usec-precision": 36.346,
+    "ru-stime-msec-usec-precision": 22.023,
+    "ru-minflt": 2852,
+    "ru-majflt": 13,
+    "ru-inblock": 0,
+    "ru-outblock": 0,
+    "ru_nvcsw": 0,
+    "ru_nivcsw": 44
+  },
+  "os-cpu-resources": {
+    "os-cpu-present": 8,
+    "os-cpu-available": -1
+  }
+}
 ```
 
 Some benchmarking of success versus failure validation cases on process level (randomly distracted Mac mini with Apple M1 CPU and macOS Sonoma 14.7.2 (23H311)):
@@ -66,7 +135,7 @@ Some benchmarking of success versus failure validation cases on process level (r
 
 Table: Benchmark of success and failure paths.
 
-```console
+```bash
 ❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" --warmup 13 --ignore-failure
 Benchmark 1: versioalueet -qr 'vers:pypi/42'
   Time (mean ± σ):     100.0 ms ±   1.4 ms    [User: 29.0 ms, System: 10.6 ms]
@@ -85,7 +154,7 @@ Summary
 
 Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0 and tested:
 
-```console
+```bash
 ❯ versioalueet --version-of-lib
 2024.12.26+parent.gf5384e12
 ```
@@ -94,7 +163,7 @@ Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19
 
 Assuming the `site-packages` folder is below `/some/install/` (and removing some noise):
 
-```console
+```bash
 ❯ python -m doctest /some/install/site-packages/versioalueet/api.py --fail-fast 2>&1 | cut -c34- && echo "OK"
 ERROR [VERSIOALUEET]: versions must be unique across all version constraints
 ERROR [VERSIOALUEET]: empty version detected
@@ -108,7 +177,7 @@ OK
 
 Same tests run but in verbose mode:
 
-```console
+```bash
 ❯ python -m doctest /some/install/site-packages/versioalueet/api.py --verbose && echo "OK"
 Trying:
     version_ranges = VersionRanges('vers:pypi/|1.2.3|||||')
