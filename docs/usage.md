@@ -38,16 +38,12 @@ module prefixes of the output lines):
 ❯ VERSIOALUEET_DEBUG=Y versioalueet -vr 'vers:pypi/<' 2>&1 | cut -c56-
 environment: [
 - library-env: DEBUG=True, VERSION='2024.12.26+parent.gf5384e12', ENCODING='utf-8', ENCODING_ERRORS_POLICY='ignore'
-- interpreter-env: exec_prefix='/Users/ruth/.pyenv/versions/versioalueet-3-12-4',\
- exec_path='/Users/ruth/.pyenv/versions/versioalueet-3-12-4/bin/python'
+- interpreter-env: exec_prefix='/Users/ruth/.pyenv/versions/versioalueet-3-12-4', exec_path='/Users/ruth/.pyenv/versions/versioalueet-3-12-4/bin/python'
 - interpreter-impl: impl_name='cpython', version(major=3, minor=12, micro=4, releaselevel='final', serial=0)
 - interpreter-flags: flags=['hash_randomization=1', 'int_max_str_digits=4300']
-- os-env: node_id='c79891e5-aabf-3a83-95b9-588edcd8327f', machine_type='arm64', platform_code='macOS-14.7.2',\
- platform_release='23.6.0'
-- os-uname: os_sysname='Darwin', os_nodename='helsinki.home',\
-os_version='Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103'
-- os-resource-usage: ru_maxrss_mbytes_kbytes_precision=18.656, ru_utime_msec_usec_precision=41.064,\
- ru_stime_msec_usec_precision=26.327, ru_minflt=3431, ru_majflt=13, ru_inblock=0, ru_oublock=0, ru_nvcsw=3, ru_nivcsw=54
+- os-env: node_id='c79891e5-aabf-3a83-95b9-588edcd8327f', machine_type='arm64', platform_code='macOS-14.7.2', platform_release='23.6.0'
+- os-uname: os_sysname='Darwin', os_nodename='helsinki.home',os_version='Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103'
+- os-resource-usage: ru_maxrss_mbytes_kbytes_precision=18.656, ru_utime_msec_usec_precision=41.064, ru_stime_msec_usec_precision=26.327, ru_minflt=3431, ru_majflt=13, ru_inblock=0, ru_oublock=0, ru_nvcsw=3, ru_nivcsw=54
 - os-cpu-resources: os_cpu_present=8, os_cpu_available=-1
 ]
 Model = {'received': 'vers:pypi/<', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi', 'error': 'empty version detected'}

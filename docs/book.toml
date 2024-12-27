@@ -11,6 +11,7 @@ title = "Versioalueet"
 builddir = "book"
 
 [output.html]
+additional-css = ["custom.css"]
 default-theme = "coal"
 git-repository-url = "https://git.sr.ht/~sthagen/versioalueet"
 git-repository-icon = "fa-code-fork"
