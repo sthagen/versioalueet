@@ -285,7 +285,7 @@ class VersionRanges:
 
 def main(options: argparse.Namespace) -> int:
     if DEBUG:
-        for line in env.report():
+        for line in env.report(format='text').split('\n'):  # type: ignore
             log.debug(line)
     if options.versions:
         log.warning('version inclusion assessment requested, but not implemented yet')

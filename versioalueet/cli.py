@@ -36,7 +36,7 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
         dest='report',
         default=False,
         action='store_true',
-        help='report the runtime environment (default: False)',
+        help='report the runtime environment in JSON format (default: False)',
     )
     parser.add_argument(
         '-V',
@@ -72,8 +72,7 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
         return 0
 
     if options.report:
-        for line in env.report():
-            print(line)
+        print(env.report(format='json'))
         return 0
 
     if options.verbose and options.quiet:
