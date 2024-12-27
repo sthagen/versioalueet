@@ -4,7 +4,7 @@ Version ranges (Finnish: versioalueet).
 
 [![License](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/license-spdx-mit.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/LICENSE)
 [![Country of Origin](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/country-of-origin-name-switzerland-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/COUNTRY-OF-ORIGIN)
-[![Export Classification Control Number (ECCN)](https://git.sr.ht/~sthagen/omforme/blob/default/docs/badges/export-control-classification-number_eccn-ear99-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/EXPORT-CONTROL-CLASSIFICATION-NUMBER)
+[![Export Classification Control Number (ECCN)](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/export-control-classification-number_eccn-ear99-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/EXPORT-CONTROL-CLASSIFICATION-NUMBER)
 [![Configuration](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/configuration-sbom.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/docs/third-party/README.md)
 
 [![Version](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/latest-release.svg)](https://pypi.python.org/pypi/versioalueet/)
@@ -18,7 +18,7 @@ Any feature requests or bug reports shall go to the [todos of versioalueet](http
 
 ## Primary Source repository
 
-The main source of `omforme` is on a mountain in central Switzerland.
+The main source of `versioalueet` is on a mountain in central Switzerland.
 We use distributed version control (git).
 There is no central hub.
 Every clone can become a new source for the benefit of all.
