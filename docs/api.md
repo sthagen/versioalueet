@@ -122,59 +122,60 @@ CLASSES
      |
      |  __weakref__
      |      list of weak references to the object
-     FUNCTIONS
-         fail(message: str, model: Optional[dict[str, Union[str, list[str], list[tuple[str, str]]]]] = None) -> bool
-             DRY.
-     
-             Usage examples:
-     
-             >>> DEBUG = True
-             >>> model = {'received': 'no:thing'}
-             >>> fail('some problem', model=model)
-             True
-     
-         main(options: argparse.Namespace) -> int
-     
-     DATA
-         ASTERISK = '*'
-         COLON = ':'
-         DEBUG = False
-         ModelType = dict[str, typing.Union[str, list[str], list[tuple[str, str...
-         PIPE = '|'
-         SLASH = '/'
-         Union = typing.Union
-             Union type; Union[X, Y] means either X or Y.
-     
-             On Python 3.10 and higher, the | operator
-             can also be used to denote unions;
-             X | Y means the same thing to the type checker as Union[X, Y].
-     
-             To define a union, use e.g. Union[int, str]. Details:
-             - The arguments must be types and there must be at least one.
-             - None as an argument is a special case and is replaced by
-               type(None).
-             - Unions of unions are flattened, e.g.::
-     
-                 assert Union[Union[int, str], float] == Union[int, str, float]
-     
-             - Unions of a single argument vanish, e.g.::
-     
-                 assert Union[int] == int  # The constructor actually returns int
-     
-             - Redundant arguments are skipped, e.g.::
-     
-                 assert Union[int, str, int] == Union[int, str]
-     
-             - When comparing unions, the argument order is ignored, e.g.::
-     
-                 assert Union[int, str] == Union[str, int]
-     
-             - You cannot subclass or instantiate a union.
-             - You can use Optional[X] as a shorthand for Union[X, None].
-     
-         VCPairsType = list[tuple[str, str]]
-         log = <Logger VERSIOALUEET (INFO)>
-     
-     FILE
-         /some/install/site-packages/versioalueet/api.py
+
+FUNCTIONS
+    fail(message: str, model: Optional[dict[str, Union[str, list[str], list[tuple[str, str]]]]] = None) -> bool
+        DRY.
+
+        Usage examples:
+
+        >>> DEBUG = True
+        >>> model = {'received': 'no:thing'}
+        >>> fail('some problem', model=model)
+        True
+
+    main(options: argparse.Namespace) -> int
+
+DATA
+    ASTERISK = '*'
+    COLON = ':'
+    DEBUG = False
+    ModelType = dict[str, typing.Union[str, list[str], list[tuple[str, str...
+    PIPE = '|'
+    SLASH = '/'
+    Union = typing.Union
+        Union type; Union[X, Y] means either X or Y.
+
+        On Python 3.10 and higher, the | operator
+        can also be used to denote unions;
+        X | Y means the same thing to the type checker as Union[X, Y].
+
+        To define a union, use e.g. Union[int, str]. Details:
+        - The arguments must be types and there must be at least one.
+        - None as an argument is a special case and is replaced by
+          type(None).
+        - Unions of unions are flattened, e.g.::
+
+            assert Union[Union[int, str], float] == Union[int, str, float]
+
+        - Unions of a single argument vanish, e.g.::
+
+            assert Union[int] == int  # The constructor actually returns int
+
+        - Redundant arguments are skipped, e.g.::
+
+            assert Union[int, str, int] == Union[int, str]
+
+        - When comparing unions, the argument order is ignored, e.g.::
+
+            assert Union[int, str] == Union[str, int]
+
+        - You cannot subclass or instantiate a union.
+        - You can use Optional[X] as a shorthand for Union[X, None].
+
+    VCPairsType = list[tuple[str, str]]
+    log = <Logger VERSIOALUEET (INFO)>
+
+FILE
+    /some/install/site-packages/versioalueet/api.py
 ```
