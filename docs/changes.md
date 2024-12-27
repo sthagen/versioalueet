@@ -1,5 +1,33 @@
 # Changelog
 
+2024.12.27
+:    Added environment reporting and updated documentation
+- added clarification to example in usage doc
+- added custom stylesheet to enlarge content width
+- added env module to provide process level environment reports
+- added JSON and dict format to report function
+- added report capability to CLI
+- added some 'pragma: no cover' exemptions
+- added tests for the new reporting module (env)
+- added validator and optimizer for version constraint pair sets (no implementation yet)
+- changed report command to prduce JSON
+- fixed failed CPSR-coding of pyproject.toml and requirements.txt
+- fixed heading and amended intro of API document
+- had to ignore a lot of type errors
+- included some import juggling to test dummy values in case the resource module is not available
+- no third-party dependencies besides python standard library
+- refactored CLI test to enhance maintenance with changing capabilities and changing terminal widths (in the test runs)
+- refactored env report into separate module
+- refactored unique version validation to be inside version constraint pair parsing
+- replaced debug version of an example
+- replaced help screen info
+- simplified flattening for log format reports (verbose or debug mode)
+- split assessment from report
+- updated API and CLI usage docs
+- updated benchmark to cover latest published version
+- updated third-party documentation
+- widened the content area in documentation
+
 2024.12.26
 :    Fixed meta data, amended capabilities, and optimized version ranges parser
 - added a version option for the library / package
