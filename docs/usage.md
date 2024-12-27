@@ -130,26 +130,26 @@ Some benchmarking of success versus failure validation cases on process level (r
 
 | Command                           |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
 |:----------------------------------|------------:|---------:|---------:|------------:|
-| `versioalueet -qr 'vers:pypi/42'` | 100.0 ± 1.4 |     98.3 |    104.6 | 1.00 ± 0.02 |
-| `versioalueet -qr ''`             |  99.5 ± 0.9 |     97.5 |    101.8 |        1.00 |
+| `versioalueet -qr 'vers:pypi/42'` | 102.3 ± 0.9 |    100.8 |    105.0 | 1.01 ± 0.01 |
+| `versioalueet -qr ''`             | 101.5 ± 1.0 |     99.8 |    104.4 |        1.00 |
 
 Table: Benchmark of success and failure paths.
 
 ```bash
-❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" --warmup 13 --ignore-failure
+❯❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" --warmup 13 --ignore-failure --export-markdown foo.md
 Benchmark 1: versioalueet -qr 'vers:pypi/42'
-  Time (mean ± σ):     100.0 ms ±   1.4 ms    [User: 29.0 ms, System: 10.6 ms]
-  Range (min … max):    98.3 ms … 104.6 ms    29 runs
+  Time (mean ± σ):     102.3 ms ±   0.9 ms    [User: 30.4 ms, System: 11.0 ms]
+  Range (min … max):   100.8 ms … 105.0 ms    28 runs
 
 Benchmark 2: versioalueet -qr ''
-  Time (mean ± σ):      99.5 ms ±   0.9 ms    [User: 28.9 ms, System: 10.5 ms]
-  Range (min … max):    97.5 ms … 101.8 ms    29 runs
+  Time (mean ± σ):     101.5 ms ±   1.0 ms    [User: 30.3 ms, System: 11.0 ms]
+  Range (min … max):    99.8 ms … 104.4 ms    28 runs
 
   Warning: Ignoring non-zero exit code.
 
 Summary
   versioalueet -qr '' ran
-    1.00 ± 0.02 times faster than versioalueet -qr 'vers:pypi/42'
+    1.01 ± 0.01 times faster than versioalueet -qr 'vers:pypi/42'
 ```
 
 Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0 and tested:
