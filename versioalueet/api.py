@@ -10,7 +10,8 @@ import argparse
 from typing import Union
 from urllib.parse import unquote
 
-from versioalueet import DEBUG, ENCODING, ENCODING_ERRORS_POLICY, log
+import versioalueet.env as env
+from versioalueet import DEBUG, log
 
 ASTERISK = '*'
 COLON = ':'
@@ -115,7 +116,7 @@ def _split_version_constraints(vc_string: str, model: ModelType) -> tuple[bool, 
 
 
 def _parse_version_constraint_pairs(version_constraints: list[str], model: ModelType) -> tuple[bool, VCPairsType]:
-    """Separation of concerns.
+    """Parse the constraints into pairs of versions and comparators.
 
     Implementer notes:
 
@@ -161,7 +162,29 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
     vc_pairs.sort()
     model['version-constraint-pairs'] = vc_pairs
 
+    versions = [version for version, _ in vc_pairs]
+
+    if sorted(list(set(versions))) != versions:
+        model['error'] = 'versions must be unique across all version constraints'
+        return fail(message=model['error'], model=model), []  # type: ignore
+
     return False, vc_pairs
+
+
+def _validate_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> bool:
+    """Validate and optimize the version constraints parsed from string.
+
+    Examples:
+
+    >>> True
+    True
+    """
+    vc_unequal_pairs = [(v, c) for v, c in vc_pairs if c == '!=']
+    vc_other_pairs = [(v, c) for v, c in vc_pairs if c != '!=']
+    model['vc-unequal-pairs'] = vc_unequal_pairs
+    model['vc-other-pairs'] = vc_other_pairs
+    model['version-constraint-pairs'] = vc_pairs
+    return False
 
 
 class VersionRanges:
@@ -244,11 +267,9 @@ class VersionRanges:
         if failed:
             return failed, model
 
-        versions = [version for version, _ in vc_pairs]
-
-        if sorted(list(set(versions))) != versions:
-            model['error'] = 'versions must be unique across all version constraints'
-            return fail(message=model['error'], model=model), model  # type: ignore
+        failed = _validate_version_constraints(vc_pairs, model)
+        if failed:
+            return failed, model
 
         model['version-constraints'] = [f'{c}{v}' for v, c in vc_pairs]
         model['version-range'] = (
@@ -263,7 +284,9 @@ class VersionRanges:
 
 
 def main(options: argparse.Namespace) -> int:
-    log.debug(f'{DEBUG=}, {ENCODING=}, {ENCODING_ERRORS_POLICY=}')
+    if DEBUG:
+        for line in env.report():
+            log.debug(line)
     if options.versions:
         log.warning('version inclusion assessment requested, but not implemented yet')
         log.warning("details: requested versions were ('%s')" % ("', '".join(options.versions),))
@@ -274,6 +297,14 @@ def main(options: argparse.Namespace) -> int:
             return 2
     version_ranges = VersionRanges(options.version_ranges)
     if not version_ranges.failed:
+        if DEBUG:
+            log.debug('model: [')
+            for k, v in version_ranges.model.items():
+                if isinstance(v, str):
+                    log.debug("- %s: '%s'" % (k, str(v)))
+                else:
+                    log.debug('- %s: %s' % (k, str(v)))
+            log.debug(']')
         print(version_ranges)
         return 0
 

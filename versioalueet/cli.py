@@ -5,6 +5,7 @@ import logging
 import sys
 
 import versioalueet.api as api
+import versioalueet.env as env
 from versioalueet import APP_ALIAS, APP_NAME, DEBUG, VERSION, log
 
 
@@ -28,6 +29,14 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
         default=False,
         action='store_true',
         help='work logging more information along the way (default: False)',
+    )
+    parser.add_argument(
+        '-R',
+        '--report-environment',
+        dest='report',
+        default=False,
+        action='store_true',
+        help='report the runtime environment (default: False)',
     )
     parser.add_argument(
         '-V',
@@ -60,6 +69,11 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
 
     if options.package_version:
         print(VERSION)
+        return 0
+
+    if options.report:
+        for line in env.report():
+            print(line)
         return 0
 
     if options.verbose and options.quiet:
