@@ -156,7 +156,7 @@ Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19
 
 ```bash
 ❯ versioalueet --version-of-lib
-2024.12.26+parent.gf5384e12
+2024.12.27+parent.ga02ba96a
 ```
 
 ### Doctest from Implementation
