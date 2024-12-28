@@ -17,6 +17,15 @@ ASTERISK = '*'
 COLON = ':'
 PIPE = '|'
 SLASH = '/'
+PERCENT = '%'
+
+NOT = '!'
+EQ = '='
+NE = NOT + EQ
+GT = '>'
+GE = GT + EQ
+LT = '<'
+LE = LT + EQ
 
 VCPairsType = list[tuple[str, str]]
 ModelType = dict[str, Union[str, list[str], VCPairsType]]
@@ -135,26 +144,26 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
     vc_pairs: VCPairsType = []
     for cv in version_constraints:
         comparator, version = '', ''
-        if cv.startswith('>='):
-            comparator, version = '>=', cv[2:]
-        elif cv.startswith('<='):
-            comparator, version = '<=', cv[2:]
-        elif cv.startswith('!='):
-            comparator, version = '!=', cv[2:]
-        elif cv.startswith('<'):
-            comparator, version = '<', cv[1:]
-        elif cv.startswith('>'):
-            comparator, version = '>', cv[1:]
-        elif cv.startswith('='):
-            comparator, version = '=', cv[1:]
+        if cv.startswith(GE):
+            comparator, version = GE, cv[2:]
+        elif cv.startswith(LE):
+            comparator, version = LE, cv[2:]
+        elif cv.startswith(NE):
+            comparator, version = NE, cv[2:]
+        elif cv.startswith(LT):
+            comparator, version = LT, cv[1:]
+        elif cv.startswith(GT):
+            comparator, version = GT, cv[1:]
+        elif cv.startswith(EQ):
+            comparator, version = EQ, cv[1:]
         else:
-            comparator, version = '', cv
+            comparator, version = '', cv  # TODO - map to EQ and drop on output?
 
         if not version:
             model['error'] = 'empty version detected'
             return fail(message=model['error'], model=model), []  # type: ignore
 
-        if '%' in version:
+        if PERCENT in version:
             version = unquote(version)
 
         vc_pairs.append((version, comparator))
@@ -179,8 +188,8 @@ def _validate_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> bo
     >>> True
     True
     """
-    vc_unequal_pairs = [(v, c) for v, c in vc_pairs if c == '!=']
-    vc_other_pairs = [(v, c) for v, c in vc_pairs if c != '!=']
+    vc_unequal_pairs = [(v, c) for v, c in vc_pairs if c == NE]
+    vc_other_pairs = [(v, c) for v, c in vc_pairs if c != NE]
     model['vc-unequal-pairs'] = vc_unequal_pairs
     model['vc-other-pairs'] = vc_other_pairs
     model['version-constraint-pairs'] = vc_pairs
