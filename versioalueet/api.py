@@ -193,6 +193,11 @@ def _validate_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> bo
     model['vc-unequal-pairs'] = vc_unequal_pairs
     model['vc-other-pairs'] = vc_other_pairs
     model['version-constraint-pairs'] = vc_pairs
+
+    if not vc_other_pairs:
+        return False  # TODO - for now keep any explicit EQ mentions
+
+    log.warning('not yet analyzing other than not equal version constraints')
     return False
 
 
