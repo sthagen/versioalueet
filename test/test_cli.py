@@ -3,6 +3,7 @@ import logging
 import pytest
 
 import versioalueet.cli as cli
+from versioalueet import VERSION
 from versioalueet.api import VersionRanges
 
 SYNOPSIS = 'usage: versioalueet [-h] [-q] [-v] [-R] [-V] [-r VERSION_RANGES]'
@@ -14,6 +15,23 @@ def test_main_empty_request(capsys):
     assert options == 0  # type: ignore
     out, err = capsys.readouterr()
     assert SYNOPSIS in out
+    assert not err
+
+
+def test_main_version_request(capsys):
+    options = cli.main(['-V'])
+    assert options == 0  # type: ignore
+    out, err = capsys.readouterr()
+    assert VERSION in out
+    assert not err
+
+
+def test_main_process_report_request(capsys):
+    options = cli.main(['-R'])
+    assert options == 0  # type: ignore
+    out, err = capsys.readouterr()
+    assert '"library-env":' in out
+    assert f'"version": "{VERSION}",' in out
     assert not err
 
 
