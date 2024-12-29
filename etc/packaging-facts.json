@@ -13,7 +13,7 @@
       "Programming Language :: Python :: 3.13",
       "Programming Language :: Python :: 3.9"
     ],
-    "description": "# Versioalueet\n\nVersion ranges (Finnish: versioalueet). \n\n[![License](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/license-spdx-mit.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/LICENSE)\n[![Country of Origin](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/country-of-origin-name-switzerland-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/COUNTRY-OF-ORIGIN)\n[![Export Classification Control Number (ECCN)](https://git.sr.ht/~sthagen/omforme/blob/default/docs/badges/export-control-classification-number_eccn-ear99-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/EXPORT-CONTROL-CLASSIFICATION-NUMBER)\n[![Configuration](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/configuration-sbom.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/docs/third-party/README.md)\n\n[![Version](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/latest-release.svg)](https://pypi.python.org/pypi/versioalueet/)\n[![Downloads](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/downloads-per-month.svg)](https://pepy.tech/project/versioalueet)\n[![Python](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/python-versions.svg)](https://pypi.python.org/pypi/versioalueete/)\n[![Maintenance Status](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/commits-per-year.svg)](https://git.sr.ht/~sthagen/versioalueet/log)\n\n## Documentation\n\nUser and developer [documentation of versioalueet](https://codes.dilettant.life/docs/versioalueet).\n\n## Bug Tracker\n\nAny feature requests or bug reports shall go to the [todos of versioalueet](https://todo.sr.ht/~sthagen/versioalueet).\n\n## Primary Source repository\n\nThe main source of `omforme` is on a mountain in central Switzerland.\nWe use distributed version control (git).\nThere is no central hub.\nEvery clone can become a new source for the benefit of all.\nThe preferred public clone of `versioalueet` is:\n\n* [at sourcehut](https://git.sr.ht/~sthagen/versioalueet) - a collection of tools useful for software development.\n\n## Contributions\n\nPlease do not submit \"pull requests\" (I found no way to disable that \"feature\" on GitHub).\nIf you like to share small changes under the repositories license please kindly do so by sending a patchset.\nYou can either send such a patchset per email using [git send-email](https://git-send-email.io) or \nif you are a sourcehut user by selecting \"Prepare a patchset\" on the summary page of your fork at [sourcehut](https://git.sr.ht/).\n\n## Support\n\nPlease kindly submit issues at https://todo.sr.ht/~sthagen/versioalueet or write plain text email to ~sthagen/versioalueet@lists.sr.ht to submit patches and request support. Thanks.\n\n## Status\n\nExperimental.\n\n**Note**: The default branch is `default`.\n",
+    "description": "# Versioalueet\n\nVersion ranges (Finnish: versioalueet). \n\n[![License](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/license-spdx-mit.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/LICENSE)\n[![Country of Origin](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/country-of-origin-name-switzerland-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/COUNTRY-OF-ORIGIN)\n[![Export Classification Control Number (ECCN)](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/export-control-classification-number_eccn-ear99-neutral.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/EXPORT-CONTROL-CLASSIFICATION-NUMBER)\n[![Configuration](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/configuration-sbom.svg)](https://git.sr.ht/~sthagen/versioalueet/tree/default/item/docs/third-party/README.md)\n\n[![Version](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/latest-release.svg)](https://pypi.python.org/pypi/versioalueet/)\n[![Downloads](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/downloads-per-month.svg)](https://pepy.tech/project/versioalueet)\n[![Python](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/python-versions.svg)](https://pypi.python.org/pypi/versioalueete/)\n[![Maintenance Status](https://git.sr.ht/~sthagen/versioalueet/blob/default/docs/badges/commits-per-year.svg)](https://git.sr.ht/~sthagen/versioalueet/log)\n\n## Documentation\n\nUser and developer [documentation of versioalueet](https://codes.dilettant.life/docs/versioalueet).\n\n## Bug Tracker\n\nAny feature requests or bug reports shall go to the [todos of versioalueet](https://todo.sr.ht/~sthagen/versioalueet).\n\n## Primary Source repository\n\nThe main source of `versioalueet` is on a mountain in central Switzerland.\nWe use distributed version control (git).\nThere is no central hub.\nEvery clone can become a new source for the benefit of all.\nThe preferred public clone of `versioalueet` is:\n\n* [at sourcehut](https://git.sr.ht/~sthagen/versioalueet) - a collection of tools useful for software development.\n\n## Contributions\n\nPlease do not submit \"pull requests\" (I found no way to disable that \"feature\" on GitHub).\nIf you like to share small changes under the repositories license please kindly do so by sending a patchset.\nYou can either send such a patchset per email using [git send-email](https://git-send-email.io) or \nif you are a sourcehut user by selecting \"Prepare a patchset\" on the summary page of your fork at [sourcehut](https://git.sr.ht/).\n\n## Support\n\nPlease kindly submit issues at https://todo.sr.ht/~sthagen/versioalueet or write plain text email to ~sthagen/versioalueet@lists.sr.ht to submit patches and request support. Thanks.\n\n## Status\n\nExperimental.\n\n**Note**: The default branch is `default`.\n",
     "description_content_type": "text/markdown",
     "docs_url": null,
     "download_url": null,
@@ -44,7 +44,7 @@
     "provides_extra": [
       "dev"
     ],
-    "release_url": "https://pypi.org/project/versioalueet/2024.12.27/",
+    "release_url": "https://pypi.org/project/versioalueet/2024.12.29/",
     "requires_dist": [
       "black; extra == \"dev\"",
       "coverage; extra == \"dev\"",
@@ -57,11 +57,11 @@
     ],
     "requires_python": ">=3.9",
     "summary": "Version ranges (Finnish: versioalueet).",
-    "version": "2024.12.27",
+    "version": "2024.12.29",
     "yanked": false,
     "yanked_reason": null
   },
-  "last_serial": 26694843,
+  "last_serial": 26714758,
   "releases": {
     "2024.12.25": [
       {
@@ -194,48 +194,92 @@
         "yanked": false,
         "yanked_reason": null
       }
+    ],
+    "2024.12.29": [
+      {
+        "comment_text": "",
+        "digests": {
+          "blake2b_256": "cb4ab4d26a7d826d3d70bdc506443d631e792be9392a0d97c55fdc1e81e27ea3",
+          "md5": "3aa01b943b775d20d9d14cadd955449e",
+          "sha256": "54fe0d47a17e6b0774b16b21f7be66b813b4a9127fec1a135c237db1ac50150a"
+        },
+        "downloads": -1,
+        "filename": "versioalueet-2024.12.29-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "3aa01b943b775d20d9d14cadd955449e",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 12228,
+        "upload_time": "2024-12-29T22:11:32",
+        "upload_time_iso_8601": "2024-12-29T22:11:32.346606Z",
+        "url": "https://files.pythonhosted.org/packages/cb/4a/b4d26a7d826d3d70bdc506443d631e792be9392a0d97c55fdc1e81e27ea3/versioalueet-2024.12.29-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": "",
+        "digests": {
+          "blake2b_256": "64121c84dd71a351584b0a29eb84d2551f294a1d16a0b3674031e13b5072b605",
+          "md5": "a3a4d8d451cc59f4bfbd5a5b0ba11d56",
+          "sha256": "103750bd763c2bfd53b03743f0089abeb45e4cf6815787f575d90f335b50dd37"
+        },
+        "downloads": -1,
+        "filename": "versioalueet-2024.12.29.tar.gz",
+        "has_sig": false,
+        "md5_digest": "a3a4d8d451cc59f4bfbd5a5b0ba11d56",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.9",
+        "size": 14779,
+        "upload_time": "2024-12-29T22:11:34",
+        "upload_time_iso_8601": "2024-12-29T22:11:34.140934Z",
+        "url": "https://files.pythonhosted.org/packages/64/12/1c84dd71a351584b0a29eb84d2551f294a1d16a0b3674031e13b5072b605/versioalueet-2024.12.29.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
     ]
   },
   "urls": [
     {
       "comment_text": "",
       "digests": {
-        "blake2b_256": "da38252695c3af3499b69e520c2b47719acf8bbc69df10e84c3cf65559297465",
-        "md5": "7e55cf4371180383deacfaf2c5789979",
-        "sha256": "e7a65a104fad3298373debffc4cf8e95c5642a02f19d4e6c4b26ec9a278a43a6"
+        "blake2b_256": "cb4ab4d26a7d826d3d70bdc506443d631e792be9392a0d97c55fdc1e81e27ea3",
+        "md5": "3aa01b943b775d20d9d14cadd955449e",
+        "sha256": "54fe0d47a17e6b0774b16b21f7be66b813b4a9127fec1a135c237db1ac50150a"
       },
       "downloads": -1,
-      "filename": "versioalueet-2024.12.27-py3-none-any.whl",
+      "filename": "versioalueet-2024.12.29-py3-none-any.whl",
       "has_sig": false,
-      "md5_digest": "7e55cf4371180383deacfaf2c5789979",
+      "md5_digest": "3aa01b943b775d20d9d14cadd955449e",
       "packagetype": "bdist_wheel",
       "python_version": "py3",
       "requires_python": ">=3.9",
-      "size": 11704,
-      "upload_time": "2024-12-27T20:30:16",
-      "upload_time_iso_8601": "2024-12-27T20:30:16.219211Z",
-      "url": "https://files.pythonhosted.org/packages/da/38/252695c3af3499b69e520c2b47719acf8bbc69df10e84c3cf65559297465/versioalueet-2024.12.27-py3-none-any.whl",
+      "size": 12228,
+      "upload_time": "2024-12-29T22:11:32",
+      "upload_time_iso_8601": "2024-12-29T22:11:32.346606Z",
+      "url": "https://files.pythonhosted.org/packages/cb/4a/b4d26a7d826d3d70bdc506443d631e792be9392a0d97c55fdc1e81e27ea3/versioalueet-2024.12.29-py3-none-any.whl",
       "yanked": false,
       "yanked_reason": null
     },
     {
       "comment_text": "",
       "digests": {
-        "blake2b_256": "35992449b10d994f73dcab14b6e77ac1b767b17fb4d473fa792f642be7f443b3",
-        "md5": "8752686ad21cc182d86a88c53d303448",
-        "sha256": "6214d4b7ac4441e123124a6d8dca62003c51dbaabafd957a475922891098d74f"
+        "blake2b_256": "64121c84dd71a351584b0a29eb84d2551f294a1d16a0b3674031e13b5072b605",
+        "md5": "a3a4d8d451cc59f4bfbd5a5b0ba11d56",
+        "sha256": "103750bd763c2bfd53b03743f0089abeb45e4cf6815787f575d90f335b50dd37"
       },
       "downloads": -1,
-      "filename": "versioalueet-2024.12.27.tar.gz",
+      "filename": "versioalueet-2024.12.29.tar.gz",
       "has_sig": false,
-      "md5_digest": "8752686ad21cc182d86a88c53d303448",
+      "md5_digest": "a3a4d8d451cc59f4bfbd5a5b0ba11d56",
       "packagetype": "sdist",
       "python_version": "source",
       "requires_python": ">=3.9",
-      "size": 13992,
-      "upload_time": "2024-12-27T20:30:18",
-      "upload_time_iso_8601": "2024-12-27T20:30:18.446346Z",
-      "url": "https://files.pythonhosted.org/packages/35/99/2449b10d994f73dcab14b6e77ac1b767b17fb4d473fa792f642be7f443b3/versioalueet-2024.12.27.tar.gz",
+      "size": 14779,
+      "upload_time": "2024-12-29T22:11:34",
+      "upload_time_iso_8601": "2024-12-29T22:11:34.140934Z",
+      "url": "https://files.pythonhosted.org/packages/64/12/1c84dd71a351584b0a29eb84d2551f294a1d16a0b3674031e13b5072b605/versioalueet-2024.12.29.tar.gz",
       "yanked": false,
       "yanked_reason": null
     }
