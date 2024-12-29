@@ -1,5 +1,22 @@
 # Changelog
 
+2024.12.29
+:    Added constraints optimization, unified EQ handling, optimized resource import, and refactored literals of relevance
+- added compressed version constraints string to model
+- added test cases for version constraints optimization
+- added test for normalize with explicit argument
+- added tests for version and report capabilities
+- aligned an EQ test case to the new unified handling
+- cosmetics for help example in API doc
+- empty and EQ comparator now are both mapped to EQ in the model
+- fixed failed CPSR-coding for README and documentation index
+- implemented the specified example algorithm from spec to validate and optimize the contingent version constraints
+- map classical two letter abbreviations for comparators to literals to ease maintenance
+- name a special indicator for URL encoded version strings
+- on output the optimized version constraints string is stripped of all EQ comparators
+- replaced the clumsy try-except around resource import with the more natural use of importlib.util.find_spec
+- updated version call example
+
 2024.12.27
 :    Added environment reporting and updated documentation
 - added clarification to example in usage doc
