@@ -16,7 +16,7 @@ options:
   -q, --quiet           work as quiet as possible (default: False)
   -v, --verbose         work logging more information along the way (default: False)
   -R, --report-environment
-                        report the runtime environment (default: False)
+                        report the runtime environment in JSON format (default: False)
   -V, --version-of-lib  show the library / package version and exit (default: False)
   -r VERSION_RANGES, --version-ranges VERSION_RANGES
                         version ranges as valid vers string (default: '')
@@ -28,20 +28,20 @@ A failing version ranges string validation (a version constraint with a comparat
 
 ```bash
 ❯ VERSIOALUEET_DEBUG= versioalueet -vr 'vers:pypi/<'
-2024-12-26T11:48:28.149150+00:00 ERROR [VERSIOALUEET]: empty version detected
+2024-12-29T22:14:46.368603+00:00 ERROR [VERSIOALUEET]: empty version detected
 ```
 
 Same with debug-mode activated (merging both output streams and cutting off the timestamp prefixes of the output lines):
 
 ```console
 ❯ VERSIOALUEET_DEBUG=Y versioalueet -vr 'vers:pypi/<' 2>&1 | cut -c34-
-DEBUG [VERSIOALUEET]: library-env: debug-mode=True, version=2024.12.26+parent.gf5384e12, encoding=utf-8, encoding-errors-policy=ignore
-DEBUG [VERSIOALUEET]: interpreter-env: exec-prefix=/Users/ruth/.pyenv/versions/versioalueet-3-12-4, exec-path=/Users/ruth/.pyenv/versions/versioalueet-3-12-4/bin/python
+DEBUG [VERSIOALUEET]: library-env: debug-mode=True, version=2024.12.29+parent.g1ebe3aeb, encoding=utf-8, encoding-errors-policy=ignore
+DEBUG [VERSIOALUEET]: interpreter-env: exec-prefix=/some/python/install-or-virtualenv, exec-path=/some/python/install-or-virtualenv/bin/python3.12
 DEBUG [VERSIOALUEET]: interpreter-impl: impl-name=cpython, version(major=3, minor=12, micro=4, releaselevel=final, serial=0)
 DEBUG [VERSIOALUEET]: interpreter-flags: hash_randomization=1, int_max_str_digits=4300
 DEBUG [VERSIOALUEET]: os-env: node-id=c79891e5-aabf-3a83-95b9-588edcd8327f, machine-type=arm64, platform-code=macOS-14.7.2, platform_release=23.6.0
 DEBUG [VERSIOALUEET]: os-uname: os-sysname=Darwin, os-nodename=helsinki.home, os-version=Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103
-DEBUG [VERSIOALUEET]: os-resource-usage: ru-maxrss-mbytes-kbytes-precision=14.938, ru-utime-msec-usec-precision=36.779, ru-stime-msec-usec-precision=22.758, ru-minflt=2813, ru-majflt=13, ru-inblock=0, ru-outblock=0, ru_nvcsw=0, ru_nivcsw=40
+DEBUG [VERSIOALUEET]: os-resource-usage: ru-maxrss-mbytes-kbytes-precision=15.25, ru-utime-msec-usec-precision=31.694, ru-stime-msec-usec-precision=21.841, ru-minflt=2854, ru-majflt=47, ru-inblock=0, ru-outblock=0, ru_nvcsw=246, ru_nivcsw=247
 DEBUG [VERSIOALUEET]: os-cpu-resources: os-cpu-present=8, os-cpu-available=-1
 DEBUG [VERSIOALUEET]: Model = {'received': 'vers:pypi/<', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi', 'error': 'empty version detected'}
 ERROR [VERSIOALUEET]: empty version detected
@@ -75,13 +75,13 @@ The above yields the following valid JSON (on some randomly selected machine):
 {
   "library-env": {
     "debug-mode": false,
-    "version": "2024.12.26+parent.gf5384e12",
+    "version": "2024.12.29+parent.g1ebe3aeb",
     "encoding": "utf-8",
     "encoding-errors-policy": "ignore"
   },
   "interpreter-env": {
     "exec-prefix": "/some/python/install-or-virtualenv",
-    "exec-path": "/some/python/install-or-virtualenv/bin/python"
+    "exec-path": "/some/python/install-or-virtualenv/bin/python3.12"
   },
   "interpreter-impl": {
     "impl-name": "cpython",
@@ -105,19 +105,19 @@ The above yields the following valid JSON (on some randomly selected machine):
   },
   "os-uname": {
     "os-sysname": "Darwin",
-    "os-nodename": "example.com",
+    "os-nodename": "helsinki.home",
     "os-version": "Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103"
   },
   "os-resource-usage": {
-    "ru-maxrss-mbytes-kbytes-precision": 14.547,
-    "ru-utime-msec-usec-precision": 36.346,
-    "ru-stime-msec-usec-precision": 22.023,
-    "ru-minflt": 2852,
+    "ru-maxrss-mbytes-kbytes-precision": 15.328,
+    "ru-utime-msec-usec-precision": 31.002,
+    "ru-stime-msec-usec-precision": 19.037,
+    "ru-minflt": 2842,
     "ru-majflt": 13,
     "ru-inblock": 0,
     "ru-outblock": 0,
-    "ru_nvcsw": 0,
-    "ru_nivcsw": 44
+    "ru_nvcsw": 244,
+    "ru_nivcsw": 147
   },
   "os-cpu-resources": {
     "os-cpu-present": 8,
@@ -128,35 +128,42 @@ The above yields the following valid JSON (on some randomly selected machine):
 
 Some benchmarking of success versus failure validation cases on process level (randomly distracted Mac mini with Apple M1 CPU and macOS Sonoma 14.7.2 (23H311)):
 
-| Command                           |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
-|:----------------------------------|------------:|---------:|---------:|------------:|
-| `versioalueet -qr 'vers:pypi/42'` | 102.3 ± 0.9 |    100.8 |    105.0 | 1.01 ± 0.01 |
-| `versioalueet -qr ''`             | 101.5 ± 1.0 |     99.8 |    104.4 |        1.00 |
+| Command                                                                  |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
+|:-------------------------------------------------------------------------|------------:|---------:|---------:|------------:|
+| `versioalueet -qr 'vers:pypi/42'`                                        | 101.2 ± 1.1 |     99.7 |    104.2 | 1.01 ± 0.01 |
+| `versioalueet -qr ''`                                                    | 100.5 ± 0.7 |     99.4 |    102.2 |        1.00 |
+| `versioalueet -qr 'vers:golang/>v0\|>=v1\|v2\|&lt;v3\|v4\|&lt;v5\|>=v6'` | 100.8 ± 0.7 |     99.1 |    102.8 | 1.00 ± 0.01 |
 
 Table: Benchmark of success and failure paths.
 
 ```bash
-❯❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" --warmup 13 --ignore-failure --export-markdown foo.md
-Benchmark 1: versioalueet -qr 'vers:pypi/42'
-  Time (mean ± σ):     102.3 ms ±   0.9 ms    [User: 30.4 ms, System: 11.0 ms]
-  Range (min … max):   100.8 ms … 105.0 ms    28 runs
-
-Benchmark 2: versioalueet -qr ''
-  Time (mean ± σ):     101.5 ms ±   1.0 ms    [User: 30.3 ms, System: 11.0 ms]
-  Range (min … max):    99.8 ms … 104.4 ms    28 runs
-
-  Warning: Ignoring non-zero exit code.
-
-Summary
-  versioalueet -qr '' ran
-    1.01 ± 0.01 times faster than versioalueet -qr 'vers:pypi/42'
+❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" "versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'"\
+  --warmup 13 --ignore-failure --export-markdown foo.md
+  Benchmark 1: versioalueet -qr 'vers:pypi/42'
+    Time (mean ± σ):     101.2 ms ±   1.1 ms    [User: 30.6 ms, System: 11.0 ms]
+    Range (min … max):    99.7 ms … 104.2 ms    27 runs
+  
+  Benchmark 2: versioalueet -qr ''
+    Time (mean ± σ):     100.5 ms ±   0.7 ms    [User: 30.6 ms, System: 10.9 ms]
+    Range (min … max):    99.4 ms … 102.2 ms    29 runs
+  
+    Warning: Ignoring non-zero exit code.
+  
+  Benchmark 3: versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
+    Time (mean ± σ):     100.8 ms ±   0.7 ms    [User: 30.6 ms, System: 10.9 ms]
+    Range (min … max):    99.1 ms … 102.8 ms    28 runs
+  
+  Summary
+    versioalueet -qr '' ran
+      1.00 ± 0.01 times faster than versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
+      1.01 ± 0.01 times faster than versioalueet -qr 'vers:pypi/42'
 ```
 
 Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0 and tested:
 
 ```bash
 ❯ versioalueet --version-of-lib
-2024.12.27+parent.ga02ba96a
+2024.12.29+parent.g1ebe3aeb
 ```
 
 ### Doctest from Implementation
@@ -177,7 +184,7 @@ OK
 
 Same tests run but in verbose mode:
 
-```bash
+```console
 ❯ python -m doctest /some/install/site-packages/versioalueet/api.py --verbose && echo "OK"
 Trying:
     version_ranges = VersionRanges('vers:pypi/|1.2.3|||||')
@@ -206,7 +213,7 @@ ok
 Trying:
     version_ranges = VersionRanges(f'vers:pypi/{triplicated}')
 Expecting nothing
-2024-12-26T11:59:39.869203+00:00 ERROR [VERSIOALUEET]: versions must be unique across all version constraints
+2024-12-29T22:20:43.892915+00:00 ERROR [VERSIOALUEET]: versions must be unique across all version constraints
 ok
 Trying:
     assert 'unique' in version_ranges.model.get('error', '')
@@ -219,7 +226,7 @@ ok
 Trying:
     version_ranges = VersionRanges(hidden_emopty_version)
 Expecting nothing
-2024-12-26T11:59:39.869525+00:00 ERROR [VERSIOALUEET]: empty version detected
+2024-12-29T22:20:43.893334+00:00 ERROR [VERSIOALUEET]: empty version detected
 ok
 Trying:
     assert 'empty version detected' in version_ranges.model.get('error', '')
@@ -266,18 +273,18 @@ Trying:
     vr.normalize(hidden_emopty_version)
 Expecting:
     'ERROR:<empty version detected>'
-2024-12-26T11:59:39.869797+00:00 ERROR [VERSIOALUEET]: empty version detected
+2024-12-29T22:20:43.893625+00:00 ERROR [VERSIOALUEET]: empty version detected
 ok
 Trying:
     _parse_uri_scheme('VERS:WRONG/YES', model={'received': 'VERS:WRONG/YES', 'uri-scheme': 'vers'})
 Expecting:
     (True, '')
-2024-12-26T11:59:39.869898+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
+2024-12-29T22:20:43.893723+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
 ok
 Trying:
     _parse_version_constraint_pairs(['1', '3', '=4', '2', '>=6'], model={})
 Expecting:
-    (False, [('1', ''), ('2', ''), ('3', ''), ('4', '='), ('6', '>=')])
+    (False, [('1', '='), ('2', '='), ('3', '='), ('4', '='), ('6', '>=')])
 ok
 Trying:
     model = {}
@@ -287,7 +294,7 @@ Trying:
     _parse_version_constraint_pairs(['1', '', '2'], model=model)
 Expecting:
     (True, [])
-2024-12-26T11:59:39.870010+00:00 ERROR [VERSIOALUEET]: empty version detected
+2024-12-29T22:20:43.893842+00:00 ERROR [VERSIOALUEET]: empty version detected
 ok
 Trying:
     assert 'empty' in model.get('error', '')
@@ -310,7 +317,7 @@ Trying:
     _parse_version_scheme('pypi/', model=model)
 Expecting:
     (True, '')
-2024-12-26T11:59:39.870147+00:00 ERROR [VERSIOALUEET]: version constraints must be non empty
+2024-12-29T22:20:43.893987+00:00 ERROR [VERSIOALUEET]: version constraints must be non empty
 ok
 Trying:
     _split_version_constraints('13', {})
@@ -328,6 +335,28 @@ Expecting:
     (False, ['1', '2', '3', '=4', '>=6'])
 ok
 Trying:
+    received = 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
+Expecting nothing
+ok
+Trying:
+    split_up = [('v0', GT), ('v1', GE), ('v2', EQ), ('v3', LT), ('v4', EQ), ('v5', LT), ('v6', GT)]
+Expecting nothing
+ok
+Trying:
+    failed, pairs = _validate_version_constraints(vc_pairs=split_up, model={})
+Expecting nothing
+ok
+Trying:
+    failed
+Expecting:
+    False
+ok
+Trying:
+    pairs
+Expecting:
+    [('v0', '>'), ('v5', '<'), ('v6', '>')]
+ok
+Trying:
     DEBUG = True
 Expecting nothing
 ok
@@ -339,12 +368,12 @@ Trying:
     fail('some problem', model=model)
 Expecting:
     True
-2024-12-26T11:59:39.870300+00:00 ERROR [VERSIOALUEET]: some problem
+2024-12-29T22:20:43.894288+00:00 ERROR [VERSIOALUEET]: some problem
 ok
 2 items had no tests:
     api.VersionRanges.parse
     api.main
-10 items passed all tests:
+11 items passed all tests:
    2 tests in api
    6 tests in api.VersionRanges
    3 tests in api.VersionRanges.__init__
@@ -354,9 +383,10 @@ ok
    4 tests in api._parse_version_constraint_pairs
    4 tests in api._parse_version_scheme
    3 tests in api._split_version_constraints
+   5 tests in api._validate_version_constraints
    3 tests in api.fail
-36 tests in 12 items.
-36 passed and 0 failed.
+41 tests in 13 items.
+41 passed and 0 failed.
 Test passed.
 OK
 ```

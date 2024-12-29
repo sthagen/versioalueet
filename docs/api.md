@@ -21,16 +21,17 @@ vers:pypi/42
   "version-constraint-pairs": [
     [
       "42",
-      ""
+      "="
     ]
   ],
   "version-constraints": [
-    "42"
+    "=42"
   ],
+  "version-constraints-string-compressed": "42",
   "version-range": "vers:pypi/42"
 }
 >>> version_ranges.normalize('wrong')
-2024-12-26T12:13:35.593824+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
+2024-12-29T22:31:50.771366+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
 'ERROR:<version range must start with the URI scheme vers>'
 >>> vers.log.setLevel(logging.CRITICAL)
 >>> version_ranges.normalize('wrong')
@@ -39,6 +40,70 @@ vers:pypi/42
 {
   "received": "wrong",
   "error": "version range must start with the URI scheme vers"
+}
+>>> version_ranges.normalize('vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6')
+'vers:golang/>v0|<v5|>=v6'
+>>> print(json.dumps(version_ranges.model, indent=2))
+{
+  "received": "vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6",
+  "uri-scheme": "vers",
+  "versioning-scheme": "golang",
+  "version-constraint-pairs": [
+    [
+      "v0",
+      ">"
+    ],
+    [
+      "v5",
+      "<"
+    ],
+    [
+      "v6",
+      ">="
+    ]
+  ],
+  "vc-unequal-pairs": [],
+  "vc-other-pairs": [
+    [
+      "v0",
+      ">"
+    ],
+    [
+      "v1",
+      ">="
+    ],
+    [
+      "v2",
+      "="
+    ],
+    [
+      "v3",
+      "<"
+    ],
+    [
+      "v4",
+      "="
+    ],
+    [
+      "v5",
+      "<"
+    ],
+    [
+      "v6",
+      ">="
+    ],
+    [
+      "v6",
+      ">="
+    ]
+  ],
+  "version-constraints": [
+    ">v0",
+    "<v5",
+    ">=v6"
+  ],
+  "version-constraints-string-compressed": ">v0|<v5|>=v6",
+  "version-range": "vers:golang/>v0|<v5|>=v6"
 }
 ```
 
@@ -140,7 +205,15 @@ DATA
     ASTERISK = '*'
     COLON = ':'
     DEBUG = False
+    EQ = '='
+    GE = '>='
+    GT = '>'
+    LE = '<='
+    LT = '<'
     ModelType = dict[str, typing.Union[str, list[str], list[tuple[str, str...
+    NE = '!='
+    NOT = '!'
+    PERCENT = '%'
     PIPE = '|'
     SLASH = '/'
     Union = typing.Union
