@@ -157,7 +157,7 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
         elif cv.startswith(EQ):
             comparator, version = EQ, cv[1:]
         else:
-            comparator, version = '', cv  # TODO - map to EQ and drop on output?
+            comparator, version = EQ, cv
 
         if not version:
             model['error'] = 'empty version detected'
@@ -286,9 +286,9 @@ class VersionRanges:
             return failed, model
 
         model['version-constraints'] = [f'{c}{v}' for v, c in vc_pairs]
-        model['version-range'] = (
-            'vers' + COLON + model['versioning-scheme'] + SLASH + PIPE.join(model['version-constraints'])  # type: ignore
-        )
+        vcs_compressed = PIPE.join(f'{c}{v}' if c != EQ else v for v, c in vc_pairs)
+        model['version-constraints-string-compressed'] = vcs_compressed
+        model['version-range'] = 'vers' + COLON + model['versioning-scheme'] + SLASH + vcs_compressed  # type: ignore
 
         self.versioning_scheme = model['versioning-scheme']
         self.version_constraints = model['version-constraints']

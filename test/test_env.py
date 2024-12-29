@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import sys
 
@@ -32,11 +33,11 @@ def test_report_default_without_resource():
         print('no imported resource module to be removed')
     text = env.report()
     assert LIBRARY_ENV_TEXT in text
-    try:
-        import resource
+    if importlib.util.find_spec('resource'):
+        import resource  # noqa
 
         print('imported resource again')
-    except ImportError:
+    else:
         print('import of resource failed (may be OK)')
 
 

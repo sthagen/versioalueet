@@ -1,12 +1,13 @@
 """Report facts from the environment."""
 
+import importlib.util
 import json
 import os
 import platform
 
-try:
+if importlib.util.find_spec('resource'):
     import resource
-except ImportError:  # pragma: no cover
+else:  # pragma: no cover
     pass
 import sys
 import uuid

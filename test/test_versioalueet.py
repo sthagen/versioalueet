@@ -78,7 +78,7 @@ def test_parse_comparators():
         ('vers:pypi/<=42', 'vers:pypi/<=42'),
         ('vers:pypi/>=42', 'vers:pypi/>=42'),
         ('vers:pypi/!=42', 'vers:pypi/!=42'),
-        ('vers:pypi/=42', 'vers:pypi/=42'),
+        ('vers:pypi/=42', 'vers:pypi/42'),
         ('vers:pypi/42', 'vers:pypi/42'),
         ('vers:pypi/<42', 'vers:pypi/<42'),
         ('vers:pypi/>42', 'vers:pypi/>42'),
