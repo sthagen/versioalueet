@@ -134,7 +134,7 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
     Usage examples:
 
     >>> _parse_version_constraint_pairs(['1', '3', '=4', '2', '>=6'], model={})
-    (False, [('1', ''), ('2', ''), ('3', ''), ('4', '='), ('6', '>=')])
+    (False, [('1', '='), ('2', '='), ('3', '='), ('4', '='), ('6', '>=')])
 
     >>> model = {}
     >>> _parse_version_constraint_pairs(['1', '', '2'], model=model)
@@ -180,25 +180,72 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
     return False, vc_pairs
 
 
-def _validate_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> bool:
+def _validate_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> tuple[bool, VCPairsType]:
     """Validate and optimize the version constraints parsed from string.
 
     Examples:
 
-    >>> True
-    True
+    >>> received = 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
+    >>> split_up = [('v0', GT), ('v1', GE), ('v2', EQ), ('v3', LT), ('v4', EQ), ('v5', LT), ('v6', GT)]
+    >>> failed, pairs = _validate_version_constraints(vc_pairs=split_up, model={})
+    >>> failed
+    False
+    >>> pairs
+    [('v0', '>'), ('v5', '<'), ('v6', '>')]
     """
-    vc_unequal_pairs = [(v, c) for v, c in vc_pairs if c == NE]
-    vc_other_pairs = [(v, c) for v, c in vc_pairs if c != NE]
+    if len(vc_pairs) == 1:
+        return False, vc_pairs
+
+    vc_unequal_pairs: VCPairsType = [(v, c) for v, c in vc_pairs if c == NE]
+    vc_other_pairs: VCPairsType = [(v, c) for v, c in vc_pairs if c != NE]
     model['vc-unequal-pairs'] = vc_unequal_pairs
     model['vc-other-pairs'] = vc_other_pairs
     model['version-constraint-pairs'] = vc_pairs
 
-    if not vc_other_pairs:
-        return False  # TODO - for now keep any explicit EQ mentions
+    if len(vc_other_pairs) < 2:
+        return False, vc_pairs
 
-    log.warning('not yet analyzing other than not equal version constraints')
-    return False
+    vcs_kept: VCPairsType = []
+    ignore_slot = -1
+    pv, pc = '', ''
+    vc_other_pairs.append(vc_other_pairs[-1])
+    for in_slot, (v, c) in enumerate(vc_other_pairs[:-1]):
+        next_slot = in_slot + 1
+        if ignore_slot == in_slot:
+            continue
+
+        vv, cc = vc_other_pairs[next_slot]
+        if c in (GE, GT) and cc in (EQ, GE, GT):
+            kv, kc, ignore_slot = v, c, next_slot
+        elif c in (LT, LE, EQ) and cc in (LE, LT):
+            kv, kc, ignore_slot = vv, cc, in_slot
+        else:
+            kv, kc = v, c
+
+        if not in_slot:
+            vcs_kept.append((kv, kc))
+            pv, pc = kv, kc
+            continue
+
+        # A previous comparator exists
+        if pc in (GE, GT) and kc in (EQ, GE, GT):
+            kv, kc = pv, pc
+        elif pc in (LT, LE, EQ) and kc in (LE, LT):
+            if vcs_kept:
+                vcs_kept.pop()
+            vcs_kept.append((kv, kc))
+            pv, pc = kv, kc
+        else:
+            if vcs_kept[-1] != (kv, kc):
+                vcs_kept.append((kv, kc))
+            pv, pc = kv, kc
+
+    vc_pairs = list(set(vcs_kept))
+    vc_pairs.extend(vc_unequal_pairs)
+    vc_pairs.sort()
+    model['version-constraint-pairs'] = vc_pairs
+
+    return False, vcs_kept
 
 
 class VersionRanges:
@@ -281,8 +328,8 @@ class VersionRanges:
         if failed:
             return failed, model
 
-        failed = _validate_version_constraints(vc_pairs, model)
-        if failed:
+        failed, vc_pairs = _validate_version_constraints(vc_pairs, model)
+        if failed:  # pragma: no cover
             return failed, model
 
         model['version-constraints'] = [f'{c}{v}' for v, c in vc_pairs]

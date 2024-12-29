@@ -88,6 +88,18 @@ def test_parse_comparators():
         assert version_ranges.normalize() == expected
 
 
+def test_parse_optimizer():
+    pairs = (
+        ('vers:golang/>v0.0.0|!=v42', 'vers:golang/>v0.0.0|!=v42'),
+        ('vers:golang/>v0.0.0|>=v0.0.1', 'vers:golang/>v0.0.0'),
+        ('vers:golang/>v0.0.0|>=v0.0.1|>=v0.0.2', 'vers:golang/>v0.0.0'),
+        ('vers:golang/>v0.0.0|>=v0.0.1|v0.0.2|<v0.0.3|v0.0.4|<v0.0.5|>=v0.0.6', 'vers:golang/>v0.0.0|<v0.0.5|>=v0.0.6'),
+    )
+    for incoming, expected in pairs:
+        version_ranges = VersionRanges(incoming)
+        assert version_ranges.normalize() == expected
+
+
 def test_parse_some_empty_version():
     hidden_emopty_version = 'vers:pypi/|1.2.3|>||||'
     version_ranges = VersionRanges(hidden_emopty_version)
@@ -101,3 +113,10 @@ def test_parse_hidden_duplicate_versions():
     triplicated = '|'.join((lc_url_encoded, uc_url_encoded, version_decoded))
     version_ranges = VersionRanges(f'vers:pypi/{triplicated}')
     assert 'unique' in version_ranges.model.get('error', '')
+
+
+def test_normalize_versioning_system_not_lower_case():
+    versioning_system_not_lower_case = 'vers:Npm/'
+    version_ranges = VersionRanges(versioning_system_not_lower_case)
+    response = version_ranges.normalize(versioning_system_not_lower_case)
+    assert 'lower case' in response
