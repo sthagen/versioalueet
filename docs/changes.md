@@ -1,5 +1,24 @@
 # Changelog
 
+2024.12.30
+:    Simplified optimization code, added tests, inceased consistency
+- added (real) repr and str methods
+- added doctest execution via pytest
+- added hash and eq methods to only consider the version range string
+- added test for round trip dump to and load from string
+- added tests for identity and comparisons
+- better names for optimizing and squeezing
+- better names for the stencil variables
+- extracted function for the squeeze
+- guaranteed consistent comparator typed pair containers in model
+- removal of unused variables
+- removed YAGNI doctest stub
+- replaced use of pkg_resources - untested
+- simplified function return types
+- simplified squeezing algorithm
+- updated and amended API and CLI docs
+- updated the doctests
+
 2024.12.29
 :    Added constraints optimization, unified EQ handling, optimized resource import, and refactored literals of relevance
 - added compressed version constraints string to model
