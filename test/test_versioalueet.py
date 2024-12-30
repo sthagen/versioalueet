@@ -120,3 +120,12 @@ def test_normalize_versioning_system_not_lower_case():
     version_ranges = VersionRanges(versioning_system_not_lower_case)
     response = version_ranges.normalize(versioning_system_not_lower_case)
     assert 'lower case' in response
+
+
+def test_full_cycle_repr_eval_str():
+    received = 'vers:pypi/42'
+    vr = VersionRanges(received)
+    vr_reborn = eval(repr(vr))
+    assert vr_reborn == vr
+    assert repr(vr) == f"VersionRanges('{received}')"
+    assert str(eval(repr(vr))) == received

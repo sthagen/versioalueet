@@ -295,7 +295,28 @@ class VersionRanges:
             return 'ERROR:<' + error + '>'  # type: ignore
         return self.version_range  # type:ignore
 
+    def __eq__(self, other: object) -> bool:
+        """We define equality per the version ranges."""
+        if not isinstance(other, VersionRanges):
+            return NotImplemented
+        return self.version_range == other.version_range
+
+    def __hash__(self) -> int:
+        """We define our identity per the version range."""
+        return hash(self.version_range)
+
     def __repr__(self) -> str:
+        """The version ranges string wrapped in constructor.
+
+        Usage examples:
+
+        >>> maybe_43 = 'vers:pypi/<44|>42'
+        >>> version_ranges = VersionRanges(maybe_43)
+        >>> assert "VersionRanges('vers:pypi/>42|<44')" == repr(version_ranges)
+        """
+        return f"{self.__class__.__name__}('{self.version_range}')"
+
+    def __str__(self) -> str:
         """The version ranges string is what we are.
 
         Usage examples:
