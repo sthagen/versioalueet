@@ -12,13 +12,22 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import versioalueet.api as vers
 >>> version_ranges = vers.VersionRanges('vers:pypi/42')
 >>> version_ranges
-vers:pypi/42
+VersionRanges('vers:pypi/42')
+>>> str(version_ranges)
+'vers:pypi/42'
 >>> print(json.dumps(version_ranges.model, indent=2))
 {
   "received": "vers:pypi/42",
   "uri-scheme": "vers",
   "versioning-scheme": "pypi",
   "version-constraint-pairs": [
+    [
+      "42",
+      "="
+    ]
+  ],
+  "vc-unequal-pairs": [],
+  "vc-other-pairs": [
     [
       "42",
       "="
@@ -31,7 +40,7 @@ vers:pypi/42
   "version-range": "vers:pypi/42"
 }
 >>> version_ranges.normalize('wrong')
-2024-12-29T22:31:50.771366+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
+2024-12-30T18:48:09.431690+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
 'ERROR:<version range must start with the URI scheme vers>'
 >>> vers.log.setLevel(logging.CRITICAL)
 >>> version_ranges.normalize('wrong')
@@ -142,6 +151,12 @@ CLASSES
      |
      |  Methods defined here:
      |
+     |  __eq__(self, other: object) -> bool
+     |      We define equality per the version ranges.
+     |
+     |  __hash__(self) -> int
+     |      We define our identity per the version range.
+     |
      |  __init__(self, version_range: str) -> None
      |      Later alligator.
      |
@@ -152,6 +167,15 @@ CLASSES
      |      >>> assert 'empty version detected' in version_ranges.model.get('error', '')
      |
      |  __repr__(self) -> str
+     |      The version ranges string wrapped in constructor.
+     |
+     |      Usage examples:
+     |
+     |      >>> maybe_43 = 'vers:pypi/<44|>42'
+     |      >>> version_ranges = VersionRanges(maybe_43)
+     |      >>> assert "VersionRanges('vers:pypi/>42|<44')" == repr(version_ranges)
+     |
+     |  __str__(self) -> str
      |      The version ranges string is what we are.
      |
      |      Usage examples:
@@ -247,7 +271,7 @@ DATA
         - You can use Optional[X] as a shorthand for Union[X, None].
 
     VCPairsType = list[tuple[str, str]]
-    log = <Logger VERSIOALUEET (INFO)>
+    log = <Logger VERSIOALUEET (CRITICAL)>
 
 FILE
     /some/install/site-packages/versioalueet/api.py
