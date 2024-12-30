@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "versioalueet"
-version = "2024.12.29"
+version = "2024.12.30"
 description = "Version ranges (Finnish: versioalueet)."
 readme = "README.md"
 license = {file = "LICENSE"}
