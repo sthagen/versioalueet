@@ -180,72 +180,79 @@ def _parse_version_constraint_pairs(version_constraints: list[str], model: Model
     return False, vc_pairs
 
 
-def _validate_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> tuple[bool, VCPairsType]:
+def _squeeze_ranges(vc_pairs_to_squeeze: VCPairsType) -> VCPairsType:
+    """Squeeze any redundant version constraint pair occurrences.
+
+    Examples:
+
+    >>> to_squeeze = [('v0', GT), ('v1', GE), ('v2', EQ), ('v3', LT), ('v4', EQ), ('v5', LT), ('v6', GT)]
+    >>> collected = _squeeze_ranges(to_squeeze)
+    >>> collected
+    [('v0', '>'), ('v5', '<'), ('v6', '>')]
+    """
+    collector: VCPairsType = []
+    ignore_slot = -1
+    prev_cmp = 'irrelevant'
+    vc_pairs_to_squeeze.append(vc_pairs_to_squeeze[-1])
+    for in_slot, (curr_ver, curr_cmp) in enumerate(vc_pairs_to_squeeze[:-1]):
+        next_slot = in_slot + 1
+        if ignore_slot == in_slot:
+            continue
+
+        next_ver, next_cmp = vc_pairs_to_squeeze[next_slot]
+        if curr_cmp in (GE, GT) and next_cmp in (EQ, GE, GT):
+            sel_ver, sel_cmp, ignore_slot = curr_ver, curr_cmp, next_slot
+        elif curr_cmp in (LT, LE, EQ) and next_cmp in (LE, LT):
+            sel_ver, sel_cmp, ignore_slot = next_ver, next_cmp, in_slot
+        else:
+            sel_ver, sel_cmp = curr_ver, curr_cmp
+
+        if not in_slot:
+            collector.append((sel_ver, sel_cmp))
+            prev_cmp = sel_cmp
+            continue
+
+        if prev_cmp in (GE, GT) and sel_cmp in (EQ, GE, GT):
+            continue
+
+        if prev_cmp in (LT, LE, EQ) and sel_cmp in (LE, LT) and collector:
+            collector.pop()
+
+        collector.append((sel_ver, sel_cmp))
+        prev_cmp = sel_cmp
+
+    return collector
+
+
+def _optimize_version_constraints(vc_pairs: VCPairsType, model: ModelType) -> VCPairsType:
     """Validate and optimize the version constraints parsed from string.
 
     Examples:
 
     >>> received = 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
     >>> split_up = [('v0', GT), ('v1', GE), ('v2', EQ), ('v3', LT), ('v4', EQ), ('v5', LT), ('v6', GT)]
-    >>> failed, pairs = _validate_version_constraints(vc_pairs=split_up, model={})
-    >>> failed
-    False
+    >>> pairs = _optimize_version_constraints(vc_pairs=split_up, model={})
     >>> pairs
     [('v0', '>'), ('v5', '<'), ('v6', '>')]
     """
-    if len(vc_pairs) == 1:
-        return False, vc_pairs
-
     vc_unequal_pairs: VCPairsType = [(v, c) for v, c in vc_pairs if c == NE]
     vc_other_pairs: VCPairsType = [(v, c) for v, c in vc_pairs if c != NE]
     model['vc-unequal-pairs'] = vc_unequal_pairs
     model['vc-other-pairs'] = vc_other_pairs
     model['version-constraint-pairs'] = vc_pairs
 
+    if len(vc_pairs) == 1:
+        return vc_pairs
+
     if len(vc_other_pairs) < 2:
-        return False, vc_pairs
+        return vc_pairs
 
-    vcs_kept: VCPairsType = []
-    ignore_slot = -1
-    pv, pc = '', ''
-    vc_other_pairs.append(vc_other_pairs[-1])
-    for in_slot, (v, c) in enumerate(vc_other_pairs[:-1]):
-        next_slot = in_slot + 1
-        if ignore_slot == in_slot:
-            continue
-
-        vv, cc = vc_other_pairs[next_slot]
-        if c in (GE, GT) and cc in (EQ, GE, GT):
-            kv, kc, ignore_slot = v, c, next_slot
-        elif c in (LT, LE, EQ) and cc in (LE, LT):
-            kv, kc, ignore_slot = vv, cc, in_slot
-        else:
-            kv, kc = v, c
-
-        if not in_slot:
-            vcs_kept.append((kv, kc))
-            pv, pc = kv, kc
-            continue
-
-        # A previous comparator exists
-        if pc in (GE, GT) and kc in (EQ, GE, GT):
-            kv, kc = pv, pc
-        elif pc in (LT, LE, EQ) and kc in (LE, LT):
-            if vcs_kept:
-                vcs_kept.pop()
-            vcs_kept.append((kv, kc))
-            pv, pc = kv, kc
-        else:
-            if vcs_kept[-1] != (kv, kc):
-                vcs_kept.append((kv, kc))
-            pv, pc = kv, kc
-
-    vc_pairs = list(set(vcs_kept))
+    vc_pairs = list(set(_squeeze_ranges(vc_other_pairs)))
     vc_pairs.extend(vc_unequal_pairs)
     vc_pairs.sort()
     model['version-constraint-pairs'] = vc_pairs
 
-    return False, vcs_kept
+    return vc_pairs
 
 
 class VersionRanges:
@@ -349,9 +356,7 @@ class VersionRanges:
         if failed:
             return failed, model
 
-        failed, vc_pairs = _validate_version_constraints(vc_pairs, model)
-        if failed:  # pragma: no cover
-            return failed, model
+        vc_pairs = _optimize_version_constraints(vc_pairs, model)
 
         model['version-constraints'] = [f'{c}{v}' for v, c in vc_pairs]
         vcs_compressed = PIPE.join(f'{c}{v}' if c != EQ else v for v, c in vc_pairs)
