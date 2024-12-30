@@ -1,3 +1,7 @@
+import operator
+
+import pytest
+
 from versioalueet.api import VersionRanges
 
 
@@ -129,3 +133,27 @@ def test_full_cycle_repr_eval_str():
     assert vr_reborn == vr
     assert repr(vr) == f"VersionRanges('{received}')"
     assert str(eval(repr(vr))) == received
+
+
+def test_identities():
+    received = 'vers:pypi/42'
+    vr = VersionRanges(received)
+    vr_reborn = eval(repr(vr))
+    assert hash(vr_reborn) == hash(vr)
+    assert vr != 42
+    assert vr != VersionRanges('vers:pypi/1')
+
+
+def test_comparisons_other_than_identity_are_blocked():
+    received = 'vers:pypi/42'
+    vr = VersionRanges(received)
+    vr_reborn = eval(repr(vr))
+    ops = (
+        operator.ge,
+        operator.gt,
+        operator.le,
+        operator.lt,
+    )
+    for op in ops:
+        with pytest.raises(TypeError):
+            op(vr_reborn, vr)  # type: ignore
