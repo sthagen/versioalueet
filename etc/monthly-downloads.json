@@ -3,22 +3,22 @@
     {
       "category": "3.10",
       "date": "2024-12",
-      "downloads": 70
+      "downloads": 85
     },
     {
       "category": "3.11",
       "date": "2024-12",
-      "downloads": 52
+      "downloads": 65
     },
     {
       "category": "3.12",
       "date": "2024-12",
-      "downloads": 40
+      "downloads": 50
     },
     {
       "category": "null",
       "date": "2024-12",
-      "downloads": 340
+      "downloads": 436
     }
   ],
   "package": "versioalueet",
