@@ -44,7 +44,7 @@
     "provides_extra": [
       "dev"
     ],
-    "release_url": "https://pypi.org/project/versioalueet/2024.12.29/",
+    "release_url": "https://pypi.org/project/versioalueet/2024.12.30/",
     "requires_dist": [
       "black; extra == \"dev\"",
       "coverage; extra == \"dev\"",
@@ -57,11 +57,11 @@
     ],
     "requires_python": ">=3.9",
     "summary": "Version ranges (Finnish: versioalueet).",
-    "version": "2024.12.29",
+    "version": "2024.12.30",
     "yanked": false,
     "yanked_reason": null
   },
-  "last_serial": 26714758,
+  "last_serial": 26725648,
   "releases": {
     "2024.12.25": [
       {
@@ -238,48 +238,92 @@
         "yanked": false,
         "yanked_reason": null
       }
+    ],
+    "2024.12.30": [
+      {
+        "comment_text": "",
+        "digests": {
+          "blake2b_256": "3caeeb9c2feda5d36581562268ca584505bee72e7c4c21ddc23bf6bde2595999",
+          "md5": "03272acff0c8534afc7de2b0786dc664",
+          "sha256": "94740c79e2c9a359754b82e4144409838f031c396871738a2269747b9a2ddbd2"
+        },
+        "downloads": -1,
+        "filename": "versioalueet-2024.12.30-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "03272acff0c8534afc7de2b0786dc664",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 12382,
+        "upload_time": "2024-12-30T18:09:06",
+        "upload_time_iso_8601": "2024-12-30T18:09:06.404432Z",
+        "url": "https://files.pythonhosted.org/packages/3c/ae/eb9c2feda5d36581562268ca584505bee72e7c4c21ddc23bf6bde2595999/versioalueet-2024.12.30-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": "",
+        "digests": {
+          "blake2b_256": "cbfa09037567a8601c3f5d004426e0d6370d546c97127f5f2227d6adf067a1d3",
+          "md5": "b4748563e9f92b500b6edc058d981dda",
+          "sha256": "5eb55c70e3e83208939d8951620a44185e00727518610b660e9a4d11738abfc7"
+        },
+        "downloads": -1,
+        "filename": "versioalueet-2024.12.30.tar.gz",
+        "has_sig": false,
+        "md5_digest": "b4748563e9f92b500b6edc058d981dda",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.9",
+        "size": 15187,
+        "upload_time": "2024-12-30T18:09:08",
+        "upload_time_iso_8601": "2024-12-30T18:09:08.798219Z",
+        "url": "https://files.pythonhosted.org/packages/cb/fa/09037567a8601c3f5d004426e0d6370d546c97127f5f2227d6adf067a1d3/versioalueet-2024.12.30.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
     ]
   },
   "urls": [
     {
       "comment_text": "",
       "digests": {
-        "blake2b_256": "cb4ab4d26a7d826d3d70bdc506443d631e792be9392a0d97c55fdc1e81e27ea3",
-        "md5": "3aa01b943b775d20d9d14cadd955449e",
-        "sha256": "54fe0d47a17e6b0774b16b21f7be66b813b4a9127fec1a135c237db1ac50150a"
+        "blake2b_256": "3caeeb9c2feda5d36581562268ca584505bee72e7c4c21ddc23bf6bde2595999",
+        "md5": "03272acff0c8534afc7de2b0786dc664",
+        "sha256": "94740c79e2c9a359754b82e4144409838f031c396871738a2269747b9a2ddbd2"
       },
       "downloads": -1,
-      "filename": "versioalueet-2024.12.29-py3-none-any.whl",
+      "filename": "versioalueet-2024.12.30-py3-none-any.whl",
       "has_sig": false,
-      "md5_digest": "3aa01b943b775d20d9d14cadd955449e",
+      "md5_digest": "03272acff0c8534afc7de2b0786dc664",
       "packagetype": "bdist_wheel",
       "python_version": "py3",
       "requires_python": ">=3.9",
-      "size": 12228,
-      "upload_time": "2024-12-29T22:11:32",
-      "upload_time_iso_8601": "2024-12-29T22:11:32.346606Z",
-      "url": "https://files.pythonhosted.org/packages/cb/4a/b4d26a7d826d3d70bdc506443d631e792be9392a0d97c55fdc1e81e27ea3/versioalueet-2024.12.29-py3-none-any.whl",
+      "size": 12382,
+      "upload_time": "2024-12-30T18:09:06",
+      "upload_time_iso_8601": "2024-12-30T18:09:06.404432Z",
+      "url": "https://files.pythonhosted.org/packages/3c/ae/eb9c2feda5d36581562268ca584505bee72e7c4c21ddc23bf6bde2595999/versioalueet-2024.12.30-py3-none-any.whl",
       "yanked": false,
       "yanked_reason": null
     },
     {
       "comment_text": "",
       "digests": {
-        "blake2b_256": "64121c84dd71a351584b0a29eb84d2551f294a1d16a0b3674031e13b5072b605",
-        "md5": "a3a4d8d451cc59f4bfbd5a5b0ba11d56",
-        "sha256": "103750bd763c2bfd53b03743f0089abeb45e4cf6815787f575d90f335b50dd37"
+        "blake2b_256": "cbfa09037567a8601c3f5d004426e0d6370d546c97127f5f2227d6adf067a1d3",
+        "md5": "b4748563e9f92b500b6edc058d981dda",
+        "sha256": "5eb55c70e3e83208939d8951620a44185e00727518610b660e9a4d11738abfc7"
       },
       "downloads": -1,
-      "filename": "versioalueet-2024.12.29.tar.gz",
+      "filename": "versioalueet-2024.12.30.tar.gz",
       "has_sig": false,
-      "md5_digest": "a3a4d8d451cc59f4bfbd5a5b0ba11d56",
+      "md5_digest": "b4748563e9f92b500b6edc058d981dda",
       "packagetype": "sdist",
       "python_version": "source",
       "requires_python": ">=3.9",
-      "size": 14779,
-      "upload_time": "2024-12-29T22:11:34",
-      "upload_time_iso_8601": "2024-12-29T22:11:34.140934Z",
-      "url": "https://files.pythonhosted.org/packages/64/12/1c84dd71a351584b0a29eb84d2551f294a1d16a0b3674031e13b5072b605/versioalueet-2024.12.29.tar.gz",
+      "size": 15187,
+      "upload_time": "2024-12-30T18:09:08",
+      "upload_time_iso_8601": "2024-12-30T18:09:08.798219Z",
+      "url": "https://files.pythonhosted.org/packages/cb/fa/09037567a8601c3f5d004426e0d6370d546c97127f5f2227d6adf067a1d3/versioalueet-2024.12.30.tar.gz",
       "yanked": false,
       "yanked_reason": null
     }
