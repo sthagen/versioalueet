@@ -1,25 +1,43 @@
 {
   "total": {
-    "commits": 108,
+    "commits": 114,
     "first_committed_at": "2024-12-16T21:33:27+00:00",
-    "last_committed_at": "2024-12-30T18:51:48+00:00",
-    "month_span_day_count": 13,
-    "year_span": 0.03561643835616438,
-    "commits_per_year": 3032,
-    "insertions_per_year": 734716.9230769231,
-    "deletions_per_year": 592338.8461538461,
-    "lines_per_year": 1327055.7692307692,
-    "files_per_year": 7665.0,
-    "insertions_count": 26168,
-    "deletions_count": 21097,
-    "lines_count": 47265,
-    "files_count": 273,
-    "insertions_avg": 242.2962962962963,
-    "deletions_avg": 195.34259259259258,
-    "lines_avg": 437.6388888888889,
-    "files_avg": 2.5277777777777777
+    "last_committed_at": "2025-01-01T00:51:43+00:00",
+    "month_span_day_count": 15,
+    "year_span": 0.0410958904109589,
+    "commits_per_year": 2774,
+    "insertions_per_year": 637095.3333333334,
+    "deletions_per_year": 513701.0,
+    "lines_per_year": 1150796.3333333335,
+    "files_per_year": 6764.666666666667,
+    "insertions_count": 26182,
+    "deletions_count": 21111,
+    "lines_count": 47293,
+    "files_count": 278,
+    "insertions_avg": 229.66666666666666,
+    "deletions_avg": 185.18421052631578,
+    "lines_avg": 414.85087719298247,
+    "files_avg": 2.43859649122807
   },
   "commit_stats": {
+    "2025-01-01T00:51:43+00:00": {
+      "insertions": 1,
+      "deletions": 1,
+      "lines": 2,
+      "files": 1
+    },
+    "2024-12-31T11:08:19+00:00": {
+      "insertions": 5,
+      "deletions": 5,
+      "lines": 10,
+      "files": 2
+    },
+    "2024-12-31T11:08:18+00:00": {
+      "insertions": 8,
+      "deletions": 8,
+      "lines": 16,
+      "files": 2
+    },
     "2024-12-30T18:51:48+00:00": {
       "insertions": 27,
       "deletions": 3,
@@ -714,6 +732,20 @@
       "deletions": 177,
       "lines": 563,
       "files": 23
+    },
+    "2024-12-31": {
+      "commits": 2,
+      "insertions": 13,
+      "deletions": 13,
+      "lines": 26,
+      "files": 4
+    },
+    "2025-01-01": {
+      "commits": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "lines": 2,
+      "files": 1
     }
   }
 }
