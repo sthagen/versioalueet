@@ -31,17 +31,21 @@ VCPairsType = list[tuple[str, str]]
 ModelType = dict[str, Union[str, list[str], VCPairsType]]
 
 
-def fail(message: str, model: Union[ModelType, None] = None) -> bool:
+def fail(message: str, model: Union[ModelType, None] = None, debug: bool = False) -> bool:
     """DRY.
 
     Usage examples:
 
-    >>> DEBUG = True
     >>> model = {'received': 'no:thing'}
     >>> fail('some problem', model=model)
     True
+
+    >>> model = {'received': 'no:thing'}
+    >>> fail('some problem', model=model, debug=True)
+    True
     """
-    if DEBUG and model:
+    debug = debug if debug else DEBUG
+    if debug and model:
         log.debug('Model = %s' % (model,))
     log.error(message)
     return True
