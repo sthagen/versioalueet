@@ -22,10 +22,16 @@ FORMATS = ('text', 'dict', 'json')
 
 def assess() -> EnvType:
     """Assess process environment with standard library functions."""
-    uname = os.uname()
-    os_sysname = uname.sysname
-    os_nodename = uname.nodename
-    os_version = uname.version
+    if not platform.platform(aliased=True, terse=True).lower().startswith('windows'):
+        os_uname = os.uname()
+        os_sysname = os_uname.sysname
+        os_nodename = os_uname.nodename
+        os_version = os_uname.version
+    else:
+        pf_uname = platform.uname()
+        os_sysname = pf_uname.system
+        os_nodename = pf_uname.node
+        os_version = pf_uname.version
     os_cpu_present = os.cpu_count()
     os_cpu_available = len(os.sched_getaffinity(0)) if 'sched_getaffinity' in dir(os) else -1  # type: ignore
 
