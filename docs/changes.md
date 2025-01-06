@@ -1,5 +1,10 @@
 # Changelog
 
+2025.1.6:
+:    Fixed the env report and refactored fail function
+- changed fail function signature for testability
+- fixed the failing uname report on windows ( <https://todo.sr.ht/~sthagen/versioalueet/1> )
+
 2024.12.30
 :    Simplified optimization code, added tests, inceased consistency
 - added (real) repr and str methods
