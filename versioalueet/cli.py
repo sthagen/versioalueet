@@ -85,7 +85,14 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """Delegate processing to functional module."""
+    """Delegate processing to functional module.
+
+    Examples:
+
+    >>> main(['-qr', 'vers:pypi/  42||'])
+    vers:pypi/42
+    0
+    """
     argv = sys.argv[1:] if argv is None else argv
     options = parse_request(argv)
     if isinstance(options, int):
