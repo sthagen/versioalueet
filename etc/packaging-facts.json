@@ -25,7 +25,7 @@
     "dynamic": null,
     "home_page": null,
     "keywords": "developer-tools, data-processing",
-    "license": "MIT License  Copyright (c) 2024 Stefan Hagen  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. ",
+    "license": "MIT License  Copyright (c) 2025 Stefan Hagen  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. ",
     "license_expression": null,
     "license_files": null,
     "maintainer": null,
@@ -44,7 +44,7 @@
     "provides_extra": [
       "dev"
     ],
-    "release_url": "https://pypi.org/project/versioalueet/2024.12.30/",
+    "release_url": "https://pypi.org/project/versioalueet/2025.1.6/",
     "requires_dist": [
       "black; extra == \"dev\"",
       "coverage; extra == \"dev\"",
@@ -57,11 +57,11 @@
     ],
     "requires_python": ">=3.9",
     "summary": "Version ranges (Finnish: versioalueet).",
-    "version": "2024.12.30",
+    "version": "2025.1.6",
     "yanked": false,
     "yanked_reason": null
   },
-  "last_serial": 26725648,
+  "last_serial": 26813322,
   "releases": {
     "2024.12.25": [
       {
@@ -282,48 +282,92 @@
         "yanked": false,
         "yanked_reason": null
       }
+    ],
+    "2025.1.6": [
+      {
+        "comment_text": "",
+        "digests": {
+          "blake2b_256": "985ed79154d92b5598cd93cf9b543bc1f1143be4429355eb72f9dc8ee568a7d3",
+          "md5": "8d26d07a4a4f0f0817ec0059b5cd7e60",
+          "sha256": "6e9668fdc12d3ca7ab43649c114ce65b361ae97d91513842cf76905215daaabc"
+        },
+        "downloads": -1,
+        "filename": "versioalueet-2025.1.6-py3-none-any.whl",
+        "has_sig": false,
+        "md5_digest": "8d26d07a4a4f0f0817ec0059b5cd7e60",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 12473,
+        "upload_time": "2025-01-06T20:07:52",
+        "upload_time_iso_8601": "2025-01-06T20:07:52.559617Z",
+        "url": "https://files.pythonhosted.org/packages/98/5e/d79154d92b5598cd93cf9b543bc1f1143be4429355eb72f9dc8ee568a7d3/versioalueet-2025.1.6-py3-none-any.whl",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      {
+        "comment_text": "",
+        "digests": {
+          "blake2b_256": "e46c1fcc4a8d9e8c877a1324df175f0fd3355781d75c0ca36f7a292c3eb748e8",
+          "md5": "b9f99c8856e80ad30cbefd539b2a0f5b",
+          "sha256": "51f3aaf9e705010f1154fdc62fc811d344a2432fa8176b6a306e402941126c35"
+        },
+        "downloads": -1,
+        "filename": "versioalueet-2025.1.6.tar.gz",
+        "has_sig": false,
+        "md5_digest": "b9f99c8856e80ad30cbefd539b2a0f5b",
+        "packagetype": "sdist",
+        "python_version": "source",
+        "requires_python": ">=3.9",
+        "size": 15274,
+        "upload_time": "2025-01-06T20:07:54",
+        "upload_time_iso_8601": "2025-01-06T20:07:54.557049Z",
+        "url": "https://files.pythonhosted.org/packages/e4/6c/1fcc4a8d9e8c877a1324df175f0fd3355781d75c0ca36f7a292c3eb748e8/versioalueet-2025.1.6.tar.gz",
+        "yanked": false,
+        "yanked_reason": null
+      }
     ]
   },
   "urls": [
     {
       "comment_text": "",
       "digests": {
-        "blake2b_256": "3caeeb9c2feda5d36581562268ca584505bee72e7c4c21ddc23bf6bde2595999",
-        "md5": "03272acff0c8534afc7de2b0786dc664",
-        "sha256": "94740c79e2c9a359754b82e4144409838f031c396871738a2269747b9a2ddbd2"
+        "blake2b_256": "985ed79154d92b5598cd93cf9b543bc1f1143be4429355eb72f9dc8ee568a7d3",
+        "md5": "8d26d07a4a4f0f0817ec0059b5cd7e60",
+        "sha256": "6e9668fdc12d3ca7ab43649c114ce65b361ae97d91513842cf76905215daaabc"
       },
       "downloads": -1,
-      "filename": "versioalueet-2024.12.30-py3-none-any.whl",
+      "filename": "versioalueet-2025.1.6-py3-none-any.whl",
       "has_sig": false,
-      "md5_digest": "03272acff0c8534afc7de2b0786dc664",
+      "md5_digest": "8d26d07a4a4f0f0817ec0059b5cd7e60",
       "packagetype": "bdist_wheel",
       "python_version": "py3",
       "requires_python": ">=3.9",
-      "size": 12382,
-      "upload_time": "2024-12-30T18:09:06",
-      "upload_time_iso_8601": "2024-12-30T18:09:06.404432Z",
-      "url": "https://files.pythonhosted.org/packages/3c/ae/eb9c2feda5d36581562268ca584505bee72e7c4c21ddc23bf6bde2595999/versioalueet-2024.12.30-py3-none-any.whl",
+      "size": 12473,
+      "upload_time": "2025-01-06T20:07:52",
+      "upload_time_iso_8601": "2025-01-06T20:07:52.559617Z",
+      "url": "https://files.pythonhosted.org/packages/98/5e/d79154d92b5598cd93cf9b543bc1f1143be4429355eb72f9dc8ee568a7d3/versioalueet-2025.1.6-py3-none-any.whl",
       "yanked": false,
       "yanked_reason": null
     },
     {
       "comment_text": "",
       "digests": {
-        "blake2b_256": "cbfa09037567a8601c3f5d004426e0d6370d546c97127f5f2227d6adf067a1d3",
-        "md5": "b4748563e9f92b500b6edc058d981dda",
-        "sha256": "5eb55c70e3e83208939d8951620a44185e00727518610b660e9a4d11738abfc7"
+        "blake2b_256": "e46c1fcc4a8d9e8c877a1324df175f0fd3355781d75c0ca36f7a292c3eb748e8",
+        "md5": "b9f99c8856e80ad30cbefd539b2a0f5b",
+        "sha256": "51f3aaf9e705010f1154fdc62fc811d344a2432fa8176b6a306e402941126c35"
       },
       "downloads": -1,
-      "filename": "versioalueet-2024.12.30.tar.gz",
+      "filename": "versioalueet-2025.1.6.tar.gz",
       "has_sig": false,
-      "md5_digest": "b4748563e9f92b500b6edc058d981dda",
+      "md5_digest": "b9f99c8856e80ad30cbefd539b2a0f5b",
       "packagetype": "sdist",
       "python_version": "source",
       "requires_python": ">=3.9",
-      "size": 15187,
-      "upload_time": "2024-12-30T18:09:08",
-      "upload_time_iso_8601": "2024-12-30T18:09:08.798219Z",
-      "url": "https://files.pythonhosted.org/packages/cb/fa/09037567a8601c3f5d004426e0d6370d546c97127f5f2227d6adf067a1d3/versioalueet-2024.12.30.tar.gz",
+      "size": 15274,
+      "upload_time": "2025-01-06T20:07:54",
+      "upload_time_iso_8601": "2025-01-06T20:07:54.557049Z",
+      "url": "https://files.pythonhosted.org/packages/e4/6c/1fcc4a8d9e8c877a1324df175f0fd3355781d75c0ca36f7a292c3eb748e8/versioalueet-2025.1.6.tar.gz",
       "yanked": false,
       "yanked_reason": null
     }
