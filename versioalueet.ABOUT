@@ -1,13 +1,13 @@
 name: versioalueet
 description: Version ranges (Finnish: versioalueet).
 license_spdx: MIT
-version: 2025.1.6
+version: 2025.1.8
 spec_version: 1.0
 home_url: https://git.sr.ht/~sthagen/versioalueet
 news_url: https://libraries.io/pypi/versioalueet/versions.atom
-date: 2025-01-06
+date: 2025-01-08
 about_resource: ./
-libraries_io_url: https://libraries.io/pypi/versioalueet?number=2025.1.6
+libraries_io_url: https://libraries.io/pypi/versioalueet?number=2025.1.8
 vcs_tool: git
 vcs_repository: https://git.sr.ht/~sthagen/versioalueet
 vcs_branch: default
