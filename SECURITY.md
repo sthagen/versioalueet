@@ -6,8 +6,8 @@ Versions of versioalueet currently being supported with security updates.
 
 | Version(s) | Supported |
 |:-----------|:----------|
-| 2025.1.6   | yes       |
-| < 2025.1.6 | no        |
+| 2025.1.8   | yes       |
+| < 2025.1.8 | no        |
 
 ## Reporting a Vulnerability
 
