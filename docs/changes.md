@@ -1,6 +1,14 @@
 # Changelog
 
-2025.1.6:
+2025.1.8
+:    Fixed the union type annotation ( <https://todo.sr.ht/~sthagen/versioalueet/2> ) and enhanced debug handling
+- adapted report to new debug mode management
+- added new debug option including tests
+- fixed the union type annotation to restore python 3.9 compatibility
+- increased test coverage
+- VERSIOALUEET_DEBUG environment variable now only used to overwrite the new debug option (which it should not, ahem) to simplify the state machine
+
+2025.1.6
 :    Fixed the env report and refactored fail function
 - changed fail function signature for testability
 - fixed the failing uname report on windows ( <https://todo.sr.ht/~sthagen/versioalueet/1> )

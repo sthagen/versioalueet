@@ -40,7 +40,7 @@ VersionRanges('vers:pypi/42')
   "version-range": "vers:pypi/42"
 }
 >>> version_ranges.normalize('wrong')
-2024-12-30T18:48:09.431690+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
+2025-01-08T05:56:23.309204+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
 'ERROR:<version range must start with the URI scheme vers>'
 >>> vers.log.setLevel(logging.CRITICAL)
 >>> version_ranges.normalize('wrong')
@@ -213,14 +213,17 @@ CLASSES
      |      list of weak references to the object
 
 FUNCTIONS
-    fail(message: str, model: Optional[dict[str, Union[str, list[str], list[tuple[str, str]]]]] = None) -> bool
+    fail(message: str, model: Optional[dict[str, Union[str, list[str], list[tuple[str, str]]]]] = None, debug: bool = False) -> bool
         DRY.
 
         Usage examples:
 
-        >>> DEBUG = True
         >>> model = {'received': 'no:thing'}
         >>> fail('some problem', model=model)
+        True
+
+        >>> model = {'received': 'no:thing'}
+        >>> fail('some problem', model=model, debug=True)
         True
 
     main(options: argparse.Namespace) -> int
@@ -228,7 +231,6 @@ FUNCTIONS
 DATA
     ASTERISK = '*'
     COLON = ':'
-    DEBUG = False
     EQ = '='
     GE = '>='
     GT = '>'

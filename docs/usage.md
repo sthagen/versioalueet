@@ -4,7 +4,7 @@
 
 ```console
 ❯ versioalueet
-usage: versioalueet [-h] [-q] [-v] [-R] [-V] [-r VERSION_RANGES] [versions ...]
+usage: versioalueet [-h] [-q] [-v] [-d] [-R] [-V] [-r VERSION_RANGES] [versions ...]
 
 Version ranges (Finnish: versioalueet).
 
@@ -15,6 +15,7 @@ options:
   -h, --help            show this help message and exit
   -q, --quiet           work as quiet as possible (default: False)
   -v, --verbose         work logging more information along the way (default: False)
+  -d, --debug           provide debug level information (default: False)
   -R, --report-environment
                         report the runtime environment in JSON format (default: False)
   -V, --version-of-lib  show the library / package version and exit (default: False)
@@ -28,22 +29,21 @@ A failing version ranges string validation (a version constraint with a comparat
 
 ```bash
 ❯ VERSIOALUEET_DEBUG= versioalueet -vr 'vers:pypi/<'
-2024-12-30T18:15:37.320095+00:00 ERROR [VERSIOALUEET]: empty version detected
+2025-01-08T05:59:44.688727+00:00 ERROR [VERSIOALUEET]: empty version detected
 ```
 
 Same with debug-mode activated (merging both output streams and cutting off the timestamp prefixes of the output lines):
 
 ```console
 ❯ VERSIOALUEET_DEBUG=Y versioalueet -vr 'vers:pypi/<' 2>&1 | cut -c34-
-DEBUG [VERSIOALUEET]: library-env: debug-mode=True, version=2024.12.30+parent.gdbf70edb, encoding=utf-8, encoding-errors-policy=ignore
+DEBUG [VERSIOALUEET]: library-env: debug-mode=True, quiet-mode=False, verbose-mode=True, version=2025.1.8+parent.gabadcafe, encoding=utf-8, encoding-errors-policy=ignore
 DEBUG [VERSIOALUEET]: interpreter-env: exec-prefix=/some/python/install-or-virtualenv, exec-path=/some/python/install-or-virtualenv/bin/python3.12
 DEBUG [VERSIOALUEET]: interpreter-impl: impl-name=cpython, version(major=3, minor=12, micro=4, releaselevel=final, serial=0)
 DEBUG [VERSIOALUEET]: interpreter-flags: hash_randomization=1, int_max_str_digits=4300
-DEBUG [VERSIOALUEET]: os-env: node-id=807d4647-bb4f-3886-b29b-67cbc762ab28, machine-type=arm64, platform-code=macOS-14.7.2, platform_release=23.6.0
-DEBUG [VERSIOALUEET]: os-uname: os-sysname=Darwin, os-nodename=helsinki.local, os-version=Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103
-DEBUG [VERSIOALUEET]: os-resource-usage: ru-maxrss-mbytes-kbytes-precision=14.5, ru-utime-msec-usec-precision=35.631, ru-stime-msec-usec-precision=21.219, ru-minflt=2777, ru-majflt=13, ru-inblock=0, ru-outblock=0, ru_nvcsw=0, ru_nivcsw=49
+DEBUG [VERSIOALUEET]: os-env: node-id=c79891e5-aabf-3a83-95b9-588edcd8327f, machine-type=arm64, platform-code=macOS-14.7.2, platform_release=23.6.0
+DEBUG [VERSIOALUEET]: os-uname: os-sysname=Darwin, os-nodename=helsinki.home, os-version=Darwin Kernel Version 23.6.0: Fri Nov 15 15:13:56 PST 2024; root:xnu-10063.141.1.702.7~1/RELEASE_ARM64_T8103
+DEBUG [VERSIOALUEET]: os-resource-usage: ru-maxrss-mbytes-kbytes-precision=16.297, ru-utime-msec-usec-precision=38.371, ru-stime-msec-usec-precision=32.527, ru-minflt=3127, ru-majflt=341, ru-inblock=0, ru-outblock=0, ru_nvcsw=325, ru_nivcsw=540
 DEBUG [VERSIOALUEET]: os-cpu-resources: os-cpu-present=8, os-cpu-available=-1
-DEBUG [VERSIOALUEET]: Model = {'received': 'vers:pypi/<', 'uri-scheme': 'vers', 'versioning-scheme': 'pypi', 'error': 'empty version detected'}
 ERROR [VERSIOALUEET]: empty version detected
 ```
 
@@ -75,7 +75,9 @@ The above yields the following valid JSON (on some randomly selected machine):
 {
   "library-env": {
     "debug-mode": false,
-    "version": "2024.12.30+parent.gdbf70edb",
+    "quiet-mode": false,
+    "verbose-mode": false,
+    "version": "2025.1.8+parent.gabadcafe",
     "encoding": "utf-8",
     "encoding-errors-policy": "ignore"
   },
@@ -179,6 +181,7 @@ ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
 ERROR [VERSIOALUEET]: empty version detected
 ERROR [VERSIOALUEET]: version constraints must be non empty
 ERROR [VERSIOALUEET]: some problem
+ERROR [VERSIOALUEET]: some problem
 OK
 ```
 
@@ -213,7 +216,7 @@ ok
 Trying:
     version_ranges = VersionRanges(f'vers:pypi/{triplicated}')
 Expecting nothing
-2024-12-30T18:18:54.066614+00:00 ERROR [VERSIOALUEET]: versions must be unique across all version constraints
+2025-01-08T06:04:34.002849+00:00 ERROR [VERSIOALUEET]: versions must be unique across all version constraints
 ok
 Trying:
     assert 'unique' in version_ranges.model.get('error', '')
@@ -226,7 +229,7 @@ ok
 Trying:
     version_ranges = VersionRanges(hidden_emopty_version)
 Expecting nothing
-2024-12-30T18:18:54.066995+00:00 ERROR [VERSIOALUEET]: empty version detected
+2025-01-08T06:04:34.003441+00:00 ERROR [VERSIOALUEET]: empty version detected
 ok
 Trying:
     assert 'empty version detected' in version_ranges.model.get('error', '')
@@ -285,7 +288,7 @@ Trying:
     vr.normalize(hidden_emopty_version)
 Expecting:
     'ERROR:<empty version detected>'
-2024-12-30T18:18:54.067357+00:00 ERROR [VERSIOALUEET]: empty version detected
+2025-01-08T06:04:34.003837+00:00 ERROR [VERSIOALUEET]: empty version detected
 ok
 Trying:
     received = 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
@@ -308,7 +311,7 @@ Trying:
     _parse_uri_scheme('VERS:WRONG/YES', model={'received': 'VERS:WRONG/YES', 'uri-scheme': 'vers'})
 Expecting:
     (True, '')
-2024-12-30T18:18:54.067573+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
+2025-01-08T06:04:34.004155+00:00 ERROR [VERSIOALUEET]: version range must start with the URI scheme vers
 ok
 Trying:
     _parse_version_constraint_pairs(['1', '3', '=4', '2', '>=6'], model={})
@@ -323,7 +326,7 @@ Trying:
     _parse_version_constraint_pairs(['1', '', '2'], model=model)
 Expecting:
     (True, [])
-2024-12-30T18:18:54.067687+00:00 ERROR [VERSIOALUEET]: empty version detected
+2025-01-08T06:04:34.004326+00:00 ERROR [VERSIOALUEET]: empty version detected
 ok
 Trying:
     assert 'empty' in model.get('error', '')
@@ -346,7 +349,7 @@ Trying:
     _parse_version_scheme('pypi/', model=model)
 Expecting:
     (True, '')
-2024-12-30T18:18:54.067828+00:00 ERROR [VERSIOALUEET]: version constraints must be non empty
+2025-01-08T06:04:34.004490+00:00 ERROR [VERSIOALUEET]: version constraints must be non empty
 ok
 Trying:
     _split_version_constraints('13', {})
@@ -377,10 +380,6 @@ Expecting:
     [('v0', '>'), ('v5', '<'), ('v6', '>')]
 ok
 Trying:
-    DEBUG = True
-Expecting nothing
-ok
-Trying:
     model = {'received': 'no:thing'}
 Expecting nothing
 ok
@@ -388,7 +387,17 @@ Trying:
     fail('some problem', model=model)
 Expecting:
     True
-2024-12-30T18:18:54.068081+00:00 ERROR [VERSIOALUEET]: some problem
+2025-01-08T06:04:34.004779+00:00 ERROR [VERSIOALUEET]: some problem
+ok
+Trying:
+    model = {'received': 'no:thing'}
+Expecting nothing
+ok
+Trying:
+    fail('some problem', model=model, debug=True)
+Expecting:
+    True
+2025-01-08T06:04:34.004847+00:00 ERROR [VERSIOALUEET]: some problem
 ok
 4 items had no tests:
     api.VersionRanges.__eq__
@@ -408,9 +417,9 @@ ok
    4 tests in api._parse_version_scheme
    3 tests in api._split_version_constraints
    3 tests in api._squeeze_ranges
-   3 tests in api.fail
-46 tests in 17 items.
-46 passed and 0 failed.
+   4 tests in api.fail
+47 tests in 17 items.
+47 passed and 0 failed.
 Test passed.
 OK
 ```
