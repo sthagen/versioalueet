@@ -2,25 +2,29 @@ import importlib.util
 import json
 import sys
 
+from versioalueet.cli import parse_request
 import versioalueet.env as env
-from versioalueet import DEBUG, ENCODING, ENCODING_ERRORS_POLICY, VERSION
+from versioalueet import ENCODING, ENCODING_ERRORS_POLICY, VERSION
 
 
 LIBRARY_ENV_DICT = {
-    'debug-mode': DEBUG,
+    'debug-mode': False,
+    'quiet-mode': False,
+    'verbose-mode': True,
     'version': VERSION,
     'encoding': ENCODING,
     'encoding-errors-policy': ENCODING_ERRORS_POLICY,
 }
 
 LIBRARY_ENV_TEXT = (
-    f'library-env: debug-mode={DEBUG}, version={VERSION}, encoding={ENCODING},'
+    f'library-env: debug-mode={False}, quiet-mode={False}, verbose-mode={True}, version={VERSION}, encoding={ENCODING},'
     f' encoding-errors-policy={ENCODING_ERRORS_POLICY}'
 )
 
 
 def test_assess():
-    data = env.assess()
+    options = parse_request(['-v'])
+    data = env.assess(options)
     assert data
     assert data.get('library-env', {}) == LIBRARY_ENV_DICT
 
@@ -31,7 +35,8 @@ def test_report_default_without_resource():
         print('removed imported resource module')
     else:
         print('no imported resource module to be removed')
-    text = env.report()
+    options = parse_request(['-v'])
+    text = env.report(options)
     assert LIBRARY_ENV_TEXT in text
     if importlib.util.find_spec('resource'):
         import resource  # noqa
@@ -42,16 +47,18 @@ def test_report_default_without_resource():
 
 
 def test_report_as_dict():
-    assessed = env.assess()
+    options = parse_request(['-v'])
+    assessed = env.assess(options)
     del assessed['os-resource-usage']
-    reported = env.report(format='dict')
+    reported = env.report(options, format='dict')
     del reported['os-resource-usage']
     assert assessed == reported
 
 
 def test_report_as_json():
-    assessed = env.assess()
+    options = parse_request(['-v'])
+    assessed = env.assess(options)
     del assessed['os-resource-usage']
-    reported = json.loads(env.report(format='json'))  # noqa
+    reported = json.loads(env.report(options, format='json'))  # noqa
     del reported['os-resource-usage']
     assert assessed == reported

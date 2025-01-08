@@ -1,5 +1,6 @@
 """Report facts from the environment."""
 
+import argparse
 import importlib.util
 import json
 import os
@@ -12,7 +13,7 @@ else:  # pragma: no cover
 import sys
 import uuid
 from typing import Union
-from versioalueet import DEBUG, ENCODING, ENCODING_ERRORS_POLICY, VERSION
+from versioalueet import ENCODING, ENCODING_ERRORS_POLICY, VERSION
 
 VolatileDictType = dict[str, Union[str, bool, float, int]]
 EnvType = dict[str, dict[str, VolatileDictType]]
@@ -20,7 +21,7 @@ FormatType = str
 FORMATS = ('text', 'dict', 'json')
 
 
-def assess() -> EnvType:
+def assess(options: argparse.Namespace) -> EnvType:
     """Assess process environment with standard library functions."""
     if not platform.platform(aliased=True, terse=True).lower().startswith('windows'):
         os_uname = os.uname()
@@ -77,7 +78,9 @@ def assess() -> EnvType:
 
     data = {
         'library-env': {
-            'debug-mode': DEBUG,
+            'debug-mode': options.debug,
+            'quiet-mode': options.quiet,
+            'verbose-mode': options.verbose,
             'version': VERSION,
             'encoding': ENCODING,
             'encoding-errors-policy': ENCODING_ERRORS_POLICY,
@@ -127,12 +130,12 @@ def assess() -> EnvType:
         },
     }
 
-    return data  # type: ignore
+    return data
 
 
-def report(format: FormatType = 'text') -> Union[str, EnvType]:
+def report(options: argparse.Namespace, format: FormatType = 'text') -> Union[str, EnvType]:
     """Assess process environment and provide report in JSON or text format."""
-    data = assess()
+    data = assess(options)
 
     if format == 'dict':
         return data

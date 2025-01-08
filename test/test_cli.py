@@ -6,7 +6,7 @@ import versioalueet.cli as cli
 from versioalueet import VERSION
 from versioalueet.api import VersionRanges
 
-SYNOPSIS = 'usage: versioalueet [-h] [-q] [-v] [-R] [-V] [-r VERSION_RANGES]'
+SYNOPSIS = 'usage: versioalueet [-h] [-q] [-v] [-d] [-R] [-V] [-r VERSION_RANGES]'
 POSITIONAL_SYNOPSIS = '[versions ...]'
 
 
@@ -59,9 +59,32 @@ def test_main_quiet_and_verbose_request(capsys):
     assert not out
 
 
+def test_main_debug_and_quiet_request(capsys):
+    with pytest.raises(SystemExit) as err:
+        options = cli.main(['-dq'])
+        assert options == 2  # type: ignore
+    out, err = capsys.readouterr()
+    assert SYNOPSIS in err
+    assert POSITIONAL_SYNOPSIS in err
+    assert 'error' in err.lower()
+    assert 'cannot be quiet and debug' in err
+    assert not out
+
+
 def test_main_valid_version_ranges_request(capsys):
     in_vrs = 'vers:pypi/*'
     options = cli.main(['-r', in_vrs])
+    assert options == 0  # type: ignore
+    out, err = capsys.readouterr()
+    version_ranges = VersionRanges(in_vrs)
+    assert version_ranges.normalize() == in_vrs
+    assert in_vrs in out
+    assert not err
+
+
+def test_main_debug_valid_version_ranges_request(capsys):
+    in_vrs = 'vers:pypi/*'
+    options = cli.main(['-dr', in_vrs])
     assert options == 0  # type: ignore
     out, err = capsys.readouterr()
     version_ranges = VersionRanges(in_vrs)

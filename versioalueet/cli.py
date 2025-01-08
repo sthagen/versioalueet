@@ -3,13 +3,14 @@
 import argparse
 import logging
 import sys
+from typing import Union
 
 import versioalueet.api as api
 import versioalueet.env as env
 from versioalueet import APP_ALIAS, APP_NAME, DEBUG, VERSION, log
 
 
-def parse_request(argv: list[str]) -> int | argparse.Namespace:
+def parse_request(argv: list[str]) -> Union[int, argparse.Namespace]:
     """Parse the command line arguments received."""
     parser = argparse.ArgumentParser(
         prog=APP_ALIAS, description=APP_NAME, formatter_class=argparse.RawTextHelpFormatter
@@ -29,6 +30,14 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
         default=False,
         action='store_true',
         help='work logging more information along the way (default: False)',
+    )
+    parser.add_argument(
+        '-d',
+        '--debug',
+        dest='debug',
+        default=False,
+        action='store_true',
+        help='provide debug level information (default: False)',
     )
     parser.add_argument(
         '-R',
@@ -72,19 +81,21 @@ def parse_request(argv: list[str]) -> int | argparse.Namespace:
         return 0
 
     if options.report:
-        print(env.report(format='json'))
+        print(env.report(options, format='json'))
         return 0
 
     if options.verbose and options.quiet:
         parser.error('you cannot be quiet and verbose at the same time')
 
-    if DEBUG and options.quiet:
+    if DEBUG:
+        options.debug = True  # pragma: no cover
+    if options.debug and options.quiet:
         parser.error('you cannot be quiet and debug at the same time')
 
     return options
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: Union[list[str], None] = None) -> int:
     """Delegate processing to functional module.
 
     Examples:
@@ -99,7 +110,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if options.quiet:
         log.setLevel(logging.CRITICAL)
-    elif DEBUG:
+    elif options.debug:
         log.setLevel(logging.DEBUG)
 
     return api.main(options)

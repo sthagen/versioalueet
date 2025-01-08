@@ -11,7 +11,7 @@ from typing import Union
 from urllib.parse import unquote
 
 import versioalueet.env as env
-from versioalueet import DEBUG, log
+from versioalueet import log
 
 ASTERISK = '*'
 COLON = ':'
@@ -44,7 +44,6 @@ def fail(message: str, model: Union[ModelType, None] = None, debug: bool = False
     >>> fail('some problem', model=model, debug=True)
     True
     """
-    debug = debug if debug else DEBUG
     if debug and model:
         log.debug('Model = %s' % (model,))
     log.error(message)
@@ -375,8 +374,8 @@ class VersionRanges:
 
 
 def main(options: argparse.Namespace) -> int:
-    if DEBUG:
-        for line in env.report(format='text').split('\n'):  # type: ignore
+    if options.debug:
+        for line in env.report(options, format='text').split('\n'):  # type: ignore
             log.debug(line)
     if options.versions:
         log.warning('version inclusion assessment requested, but not implemented yet')
@@ -388,7 +387,7 @@ def main(options: argparse.Namespace) -> int:
             return 2
     version_ranges = VersionRanges(options.version_ranges)
     if not version_ranges.failed:
-        if DEBUG:
+        if options.debug:
             log.debug('model: [')
             for k, v in version_ranges.model.items():
                 if isinstance(v, str):
