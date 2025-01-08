@@ -36,7 +36,7 @@ Same with debug-mode activated (merging both output streams and cutting off the 
 
 ```console
 ❯ VERSIOALUEET_DEBUG=Y versioalueet -vr 'vers:pypi/<' 2>&1 | cut -c34-
-DEBUG [VERSIOALUEET]: library-env: debug-mode=True, quiet-mode=False, verbose-mode=True, version=2025.1.8+parent.gabadcafe, encoding=utf-8, encoding-errors-policy=ignore
+DEBUG [VERSIOALUEET]: library-env: debug-mode=True, quiet-mode=False, verbose-mode=True, version=2025.1.8+parent.g03f55e57, encoding=utf-8, encoding-errors-policy=ignore
 DEBUG [VERSIOALUEET]: interpreter-env: exec-prefix=/some/python/install-or-virtualenv, exec-path=/some/python/install-or-virtualenv/bin/python3.12
 DEBUG [VERSIOALUEET]: interpreter-impl: impl-name=cpython, version(major=3, minor=12, micro=4, releaselevel=final, serial=0)
 DEBUG [VERSIOALUEET]: interpreter-flags: hash_randomization=1, int_max_str_digits=4300
@@ -77,7 +77,7 @@ The above yields the following valid JSON (on some randomly selected machine):
     "debug-mode": false,
     "quiet-mode": false,
     "verbose-mode": false,
-    "version": "2025.1.8+parent.gabadcafe",
+    "version": "2025.1.8+parent.g03f55e57",
     "encoding": "utf-8",
     "encoding-errors-policy": "ignore"
   },
@@ -131,41 +131,46 @@ The above yields the following valid JSON (on some randomly selected machine):
 Some benchmarking of success versus failure validation cases on process level (randomly distracted Mac mini with Apple M1 CPU and macOS Sonoma 14.7.2 (23H311)):
 
 | Command                                                                  |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
-|:-------------------------------------------------------------------------|------------:|---------:|---------:|------------:|
-| `versioalueet -qr 'vers:pypi/42'`                                        | 100.7 ± 1.1 |     99.4 |    104.9 | 1.00 ± 0.01 |
-| `versioalueet -qr ''`                                                    | 100.5 ± 1.5 |     98.8 |    103.9 | 1.00 ± 0.02 |
-| `versioalueet -qr 'vers:golang/>v0\|>=v1\|v2\|&lt;v3\|v4\|&lt;v5\|>=v6'` | 100.3 ± 0.6 |     99.2 |    101.7 |        1.00 |
+|:-------------------------------------------------------------------------|------------:|---------:|---------:|:------------|
+| `versioalueet -qr 'vers:pypi/42'`                                        | 119.0 ± 1.8 |    117.0 |    126.1 | 1.00 ± 0.02 |
+| `versioalueet -qr ''`                                                    | 118.5 ± 0.9 |    116.6 |    120.3 | 1.00        |
+| `versioalueet -qr 'vers:golang/>v0\|>=v1\|v2\|&lt;v3\|v4\|&lt;v5\|>=v6'` | 118.9 ± 1.0 |    117.1 |    121.3 | 1.00 ± 0.01 |
 
 Table: Benchmark of success and failure paths.
+
+
+| `versioalueet -qr 'vers:pypi/42'` | 119.0 ± 1.8 | 117.0 | 126.1 | 1.00 ± 0.02 |
+| `versioalueet -qr ''` | 118.5 ± 0.9 | 116.6 | 120.3 | 1.00 |
+| `versioalueet -qr 'vers:golang/>v0\|>=v1\|v2\|<v3\|v4\|<v5\|>=v6'` | 118.9 ± 1.0 | 117.1 | 121.3 | 1.00 ± 0.01 |
 
 ```bash
 ❯ hyperfine "versioalueet -qr 'vers:pypi/42'" "versioalueet -qr ''" "versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'"\
   --warmup 13 --ignore-failure --export-markdown foo.md
   Benchmark 1: versioalueet -qr 'vers:pypi/42'
-    Time (mean ± σ):     100.7 ms ±   1.1 ms    [User: 30.5 ms, System: 10.8 ms]
-    Range (min … max):    99.4 ms … 104.9 ms    28 runs
+    Time (mean ± σ):     119.0 ms ±   1.8 ms    [User: 30.6 ms, System: 10.8 ms]
+    Range (min … max):   117.0 ms … 126.1 ms    24 runs
   
   Benchmark 2: versioalueet -qr ''
-    Time (mean ± σ):     100.5 ms ±   1.5 ms    [User: 30.6 ms, System: 10.8 ms]
-    Range (min … max):    98.8 ms … 103.9 ms    28 runs
+    Time (mean ± σ):     118.5 ms ±   0.9 ms    [User: 30.5 ms, System: 10.7 ms]
+    Range (min … max):   116.6 ms … 120.3 ms    24 runs
   
     Warning: Ignoring non-zero exit code.
   
   Benchmark 3: versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
-    Time (mean ± σ):     100.3 ms ±   0.6 ms    [User: 30.5 ms, System: 10.8 ms]
-    Range (min … max):    99.2 ms … 101.7 ms    28 runs
+    Time (mean ± σ):     118.9 ms ±   1.0 ms    [User: 30.5 ms, System: 10.7 ms]
+    Range (min … max):   117.1 ms … 121.3 ms    24 runs
   
   Summary
-    versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6' ran
-      1.00 ± 0.02 times faster than versioalueet -qr ''
-      1.00 ± 0.01 times faster than versioalueet -qr 'vers:pypi/42'
+    versioalueet -qr '' ran
+      1.00 ± 0.01 times faster than versioalueet -qr 'vers:golang/>v0|>=v1|v2|<v3|v4|<v5|>=v6'
+      1.00 ± 0.02 times faster than versioalueet -qr 'vers:pypi/42'
 ```
 
 Above run was using [hyperfine](https://crates.io/crates/hyperfine) version 1.19.0 and tested:
 
 ```bash
 ❯ versioalueet --version-of-lib
-2024.12.30+parent.gdbf70edb
+2025.1.8+parent.g03f55e57
 ```
 
 ### Doctest from Implementation
