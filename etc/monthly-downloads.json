@@ -8,7 +8,7 @@
     {
       "category": "3.10",
       "date": "2025-01",
-      "downloads": 104
+      "downloads": 112
     },
     {
       "category": "3.11",
@@ -18,7 +18,7 @@
     {
       "category": "3.11",
       "date": "2025-01",
-      "downloads": 98
+      "downloads": 106
     },
     {
       "category": "3.12",
@@ -28,7 +28,7 @@
     {
       "category": "3.12",
       "date": "2025-01",
-      "downloads": 92
+      "downloads": 100
     },
     {
       "category": "3.9",
@@ -43,7 +43,7 @@
     {
       "category": "null",
       "date": "2025-01",
-      "downloads": 452
+      "downloads": 509
     }
   ],
   "package": "versioalueet",
